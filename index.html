@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鉢-bit | hachi-bit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #111111;
+      --yellow: #F5C400;
+      --yellow-dark: #D4A800;
+      --yellow-light: #FFF3B0;
+      --white: #FAFAF5;
+      --gray: #2a2a2a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* 背景の六角形パターン */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(245,196,0,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(245,196,0,0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hex-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hex-bg svg {
+      width: 100%;
+      height: 100%;
+      opacity: 0.04;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 48px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* アイコンエリア */
+    .icon-area {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--yellow), 0 0 32px rgba(245,196,0,0.3);
+      animation: pulse 3s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .icon-area::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.3), transparent 60%);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--yellow), 0 0 32px rgba(245,196,0,0.3); }
+      50% { box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--yellow), 0 0 48px rgba(245,196,0,0.5); }
+    }
+
+    /* 名前 */
+    .name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: 0.05em;
+      color: var(--yellow);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .name-jp {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.2em;
+      margin-bottom: 16px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* タグライン */
+    .tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      letter-spacing: 0.05em;
+    }
+
+    .tagline em {
+      color: var(--yellow);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    /* セパレーター */
+    .sep {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,196,0,0.3), transparent);
+      margin-bottom: 32px;
+    }
+
+    /* リンクボタン */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      border: 1.5px solid rgba(245,196,0,0.25);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      color: var(--white);
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+
+    .link-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(245,196,0,0.08), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .link-btn:hover {
+      border-color: var(--yellow);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 8px 32px rgba(245,196,0,0.2), 0 2px 8px rgba(0,0,0,0.4);
+      background: rgba(245,196,0,0.05);
+    }
+
+    .link-btn:hover::before {
+      opacity: 1;
+    }
+
+    .link-btn:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    .link-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(245,196,0,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.25s;
+    }
+
+    .link-btn:hover .link-icon {
+      background: rgba(245,196,0,0.22);
+    }
+
+    .link-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--yellow);
+    }
+
+    .link-text {
+      flex: 1;
+    }
+
+    .link-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2px;
+      letter-spacing: 0.03em;
+    }
+
+    .link-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    .link-arrow {
+      color: rgba(245,196,0,0.5);
+      font-size: 18px;
+      transition: transform 0.25s, color 0.25s;
+    }
+
+    .link-btn:hover .link-arrow {
+      transform: translateX(3px);
+      color: var(--yellow);
+    }
+
+    /* フッター */
+    .footer {
+      margin-top: 44px;
+      text-align: center;
+    }
+
+    .footer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-badge span {
+      color: var(--yellow);
+      opacity: 0.5;
+    }
+
+    /* フェードイン */
+    .container > * {
+      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .icon-area { animation-delay: 0.05s; }
+    .name { animation-delay: 0.1s; }
+    .name-jp { animation-delay: 0.15s; }
+    .tagline { animation-delay: 0.2s; }
+    .sep { animation-delay: 0.25s; }
+    .links { animation-delay: 0.3s; }
+    .footer { animation-delay: 0.4s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 六角形の背景 -->
+  <div class="hex-bg">
+    <svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="hex" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+          <polygon points="30,2 56,16 56,36 30,50 4,36 4,16" fill="none" stroke="#F5C400" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex)"/>
+    </svg>
+  </div>
+
+  <div class="container">
+
+    <div class="icon-area">🐝</div>
+
+    <div class="name">鉢-bit</div>
+    <div class="name-jp">hachi-bit</div>
+
+    <p class="tagline">
+      セメントと3Dプリントで生まれる<br>
+      <em>小さな鉢</em>と<em>おもちゃ</em>たち
+    </p>
+
+    <div class="sep"></div>
+
+    <div class="links">
+
+      <!-- X (Twitter) -->
+      <a class="link-btn" href="https://x.com/plant_8bit" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">X (Twitter)</div>
+          <div class="link-sub">@plant_8bit</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+
+      <!-- Instagram -->
+      <a class="link-btn" href="https://www.instagram.com/8.bit.l__l/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">Instagram</div>
+          <div class="link-sub">@8.bit.l__l</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+
+      <!-- note -->
+      <a class="link-btn" href="https://note.com/hachi_bit" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h16V6H4zm2 3h12v2H6V9zm0 4h8v2H6v-2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">note</div>
+          <div class="link-sub">hachi_bit</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-badge">
+        <span>◆</span> 鉢-bit / hachi-bit <span>◆</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
