@@ -18,6 +18,23 @@
   <meta name="twitter:image" content="https://hachi-bit.github.io/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "鉢-bit",
+    "alternateName": "hachi-bit",
+    "url": "https://hachi-bit.github.io/",
+    "image": "https://hachi-bit.github.io/icon.png",
+    "description": "セメントと3Dプリントで生まれる小さな鉢とおもちゃたち",
+    "sameAs": [
+      "https://x.com/plant_8bit",
+      "https://www.instagram.com/8.bit.l__l/",
+      "https://note.com/hachi_bit"
+    ]
+  }
+  </script>
   <style>
     :root {
       --black: #0a0a0a;
@@ -28,6 +45,7 @@
       --gray: #1a1a1a;
       --card-bg: rgba(245, 196, 0, 0.04);
       --card-border: rgba(245, 196, 0, 0.15);
+      --teal: #00C9B0;
     }
 
     * {
@@ -98,9 +116,18 @@
     }
 
     .hex-bg svg {
-      width: 100%;
-      height: 100%;
+      width: 120%;
+      height: 120%;
+      margin: -10%;
       opacity: 0.035;
+      animation: hexDrift 30s ease-in-out infinite;
+    }
+
+    @keyframes hexDrift {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.035; }
+      25%      { opacity: 0.05; }
+      50%      { transform: translate(-8px, -6px) rotate(1.5deg); opacity: 0.035; }
+      75%      { opacity: 0.05; }
     }
 
     /* 浮遊パーティクル */
@@ -304,6 +331,10 @@
       align-self: flex-start;
     }
 
+    .label-project {
+      color: rgba(0, 201, 176, 0.4);
+    }
+
     /* ===== リンクボタン ===== */
     .links {
       width: 100%;
@@ -397,6 +428,49 @@
 
     .link-btn:hover .link-icon svg {
       transform: scale(1.1);
+    }
+
+    /* Project セクション カラー */
+    .links-project .link-btn {
+      border-color: rgba(0, 201, 176, 0.15);
+      background: rgba(0, 201, 176, 0.03);
+    }
+
+    .links-project .link-btn:hover {
+      border-color: rgba(0, 201, 176, 0.5);
+      background: rgba(0, 201, 176, 0.06);
+      box-shadow:
+        0 12px 40px rgba(0, 201, 176, 0.12),
+        0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .links-project .link-btn::before {
+      background: linear-gradient(135deg, rgba(0, 201, 176, 0.06) 0%, transparent 50%);
+    }
+
+    .links-project .link-btn::after {
+      background: linear-gradient(135deg, rgba(0, 201, 176, 0.5), transparent 40%, transparent 60%, rgba(0, 201, 176, 0.3));
+    }
+
+    .links-project .link-icon {
+      background: rgba(0, 201, 176, 0.10);
+    }
+
+    .links-project .link-btn:hover .link-icon {
+      background: rgba(0, 201, 176, 0.20);
+      box-shadow: 0 0 16px rgba(0, 201, 176, 0.15);
+    }
+
+    .links-project .link-icon svg {
+      fill: var(--teal);
+    }
+
+    .links-project .link-arrow {
+      color: rgba(0, 201, 176, 0.35);
+    }
+
+    .links-project .link-btn:hover .link-arrow {
+      color: var(--teal);
     }
 
     .link-text {
@@ -615,8 +689,8 @@
     <div class="spacer"></div>
 
     <!-- プロジェクト -->
-    <div class="section-label">Project</div>
-    <div class="links">
+    <div class="section-label label-project">Project</div>
+    <div class="links links-project">
 
       <!-- 緑園水位シミュレーション -->
       <a class="link-btn" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
