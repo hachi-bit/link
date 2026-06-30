@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>鉢-bit | hachi-bit</title>
+  <meta name="description" content="セメントと3Dプリントで生まれる小さな鉢とおもちゃたち">
+  <link rel="icon" href="icon.png">
+  <!-- OGP -->
+  <meta property="og:title" content="鉢-bit | hachi-bit">
+  <meta property="og:description" content="セメントと3Dプリントで生まれる小さな鉢とおもちゃたち">
+  <meta property="og:image" content="https://hachi-bit.github.io/icon.png">
+  <meta property="og:url" content="https://hachi-bit.github.io/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="鉢-bit | hachi-bit">
+  <meta name="twitter:description" content="セメントと3Dプリントで生まれる小さな鉢とおもちゃたち">
+  <meta name="twitter:image" content="https://hachi-bit.github.io/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -503,8 +515,13 @@
   <div class="hex-bg">
     <svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <pattern id="hex" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
-          <polygon points="30,2 56,16 56,36 30,50 4,36 4,16" fill="none" stroke="#F5C400" stroke-width="0.8"/>
+        <pattern id="hex" x="0" y="0" width="42" height="72" patternUnits="userSpaceOnUse">
+          <!-- Row 1 -->
+          <polygon points="21,0 42,12 42,36 21,48 0,36 0,12" fill="none" stroke="#F5C400" stroke-width="0.8"/>
+          <!-- Row 2 (offset) - left -->
+          <polygon points="0,36 21,48 21,72 0,84 -21,72 -21,48" fill="none" stroke="#F5C400" stroke-width="0.8"/>
+          <!-- Row 2 (offset) - right -->
+          <polygon points="42,36 63,48 63,72 42,84 21,72 21,48" fill="none" stroke="#F5C400" stroke-width="0.8"/>
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#hex)"/>
@@ -562,7 +579,7 @@
           <div class="link-label">X (Twitter)</div>
           <div class="link-sub">@plant_8bit</div>
         </div>
-        <div class="link-arrow">→</div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
       <!-- Instagram -->
@@ -576,7 +593,7 @@
           <div class="link-label">Instagram</div>
           <div class="link-sub">@8.bit.l__l</div>
         </div>
-        <div class="link-arrow">→</div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
       <!-- note -->
@@ -590,7 +607,7 @@
           <div class="link-label">note</div>
           <div class="link-sub">hachi_bit</div>
         </div>
-        <div class="link-arrow">→</div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
     </div>
@@ -612,7 +629,7 @@
           <div class="link-label">緑園エリア 浸水シミュレーション</div>
           <div class="link-sub">3D city × flood sim</div>
         </div>
-        <div class="link-arrow">→</div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
     </div>
