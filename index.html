@@ -8,12 +8,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black: #111111;
+      --black: #0a0a0a;
       --yellow: #F5C400;
       --yellow-dark: #D4A800;
       --yellow-light: #FFF3B0;
       --white: #FAFAF5;
-      --gray: #2a2a2a;
+      --gray: #1a1a1a;
+      --card-bg: rgba(245, 196, 0, 0.04);
+      --card-border: rgba(245, 196, 0, 0.15);
     }
 
     * {
@@ -33,18 +35,48 @@
       overflow-x: hidden;
     }
 
-    /* 背景の六角形パターン */
-    body::before {
-      content: '';
+    /* ===== 背景レイヤー ===== */
+    .bg-glow {
       position: fixed;
       inset: 0;
-      background-image: 
-        radial-gradient(circle at 20% 20%, rgba(245,196,0,0.06) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(245,196,0,0.04) 0%, transparent 50%);
-      pointer-events: none;
       z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
     }
 
+    .bg-glow::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      top: -15%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(245,196,0,0.10) 0%, transparent 65%);
+      animation: glowDrift1 12s ease-in-out infinite;
+    }
+
+    .bg-glow::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      bottom: -10%;
+      right: -10%;
+      background: radial-gradient(circle, rgba(245,196,0,0.07) 0%, transparent 65%);
+      animation: glowDrift2 15s ease-in-out infinite;
+    }
+
+    @keyframes glowDrift1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, 30px); }
+    }
+
+    @keyframes glowDrift2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-30px, -40px); }
+    }
+
+    /* 六角形グリッド背景 */
     .hex-bg {
       position: fixed;
       inset: 0;
@@ -56,14 +88,52 @@
     .hex-bg svg {
       width: 100%;
       height: 100%;
-      opacity: 0.04;
+      opacity: 0.035;
     }
 
+    /* 浮遊パーティクル */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--yellow);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+
+    .particle:nth-child(1)  { left:  8%; animation-duration: 18s; animation-delay: 0s; }
+    .particle:nth-child(2)  { left: 22%; animation-duration: 22s; animation-delay: 3s; }
+    .particle:nth-child(3)  { left: 38%; animation-duration: 16s; animation-delay: 6s; }
+    .particle:nth-child(4)  { left: 55%; animation-duration: 20s; animation-delay: 1s; }
+    .particle:nth-child(5)  { left: 70%; animation-duration: 24s; animation-delay: 4s; }
+    .particle:nth-child(6)  { left: 85%; animation-duration: 19s; animation-delay: 8s; }
+    .particle:nth-child(7)  { left: 15%; animation-duration: 21s; animation-delay: 10s; }
+    .particle:nth-child(8)  { left: 48%; animation-duration: 17s; animation-delay: 5s; }
+    .particle:nth-child(9)  { left: 62%; animation-duration: 23s; animation-delay: 7s; }
+    .particle:nth-child(10) { left: 92%; animation-duration: 20s; animation-delay: 2s; }
+
+    @keyframes particleFloat {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.6; transform: translateY(90vh) scale(1); }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+    }
+
+    /* ===== メインコンテナ ===== */
     .container {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       padding: 48px 24px 64px;
       display: flex;
       flex-direction: column;
@@ -71,21 +141,41 @@
       gap: 0;
     }
 
-    /* アイコンエリア */
+    /* ===== アイコン ===== */
     .icon-area {
-      width: 96px;
-      height: 96px;
+      width: 104px;
+      height: 104px;
       border-radius: 50%;
-      background: var(--yellow);
+      background: linear-gradient(145deg, #F5C400, #D4A800);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--yellow), 0 0 32px rgba(245,196,0,0.3);
-      animation: pulse 3s ease-in-out infinite;
+      margin-bottom: 22px;
       position: relative;
-      overflow: hidden;
+      box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 5px rgba(245,196,0,0.6),
+        0 0 40px rgba(245,196,0,0.25),
+        0 4px 20px rgba(0,0,0,0.5);
+      animation: iconPulse 4s ease-in-out infinite;
+    }
+
+    .icon-area .hachi-icon {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      position: relative;
+      z-index: 1;
+    }
+
+    .icon-area::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,196,0,0.15);
+      animation: ringRotate 20s linear infinite;
     }
 
     .icon-area::after {
@@ -93,41 +183,63 @@
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.3), transparent 60%);
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.20), transparent 55%);
+      z-index: 2;
     }
 
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--yellow), 0 0 32px rgba(245,196,0,0.3); }
-      50% { box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--yellow), 0 0 48px rgba(245,196,0,0.5); }
+    @keyframes iconPulse {
+      0%, 100% { box-shadow: 0 0 0 3px var(--black), 0 0 0 5px rgba(245,196,0,0.6), 0 0 40px rgba(245,196,0,0.25), 0 4px 20px rgba(0,0,0,0.5); }
+      50%      { box-shadow: 0 0 0 3px var(--black), 0 0 0 5px rgba(245,196,0,0.8), 0 0 60px rgba(245,196,0,0.4), 0 4px 20px rgba(0,0,0,0.5); }
     }
 
-    /* 名前 */
+    @keyframes ringRotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* 軌道ドット */
+    .orbit-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: var(--yellow);
+      border-radius: 50%;
+      top: -12px;
+      left: 50%;
+      transform-origin: 50% calc(50% + 64px);
+      animation: ringRotate 20s linear infinite;
+      box-shadow: 0 0 8px rgba(245,196,0,0.8);
+    }
+
+    /* ===== 名前 ===== */
     .name {
       font-family: 'Space Mono', monospace;
       font-weight: 700;
-      font-size: 28px;
-      letter-spacing: 0.05em;
+      font-size: 30px;
+      letter-spacing: 0.06em;
       color: var(--yellow);
       margin-bottom: 4px;
       text-align: center;
+      text-shadow: 0 0 20px rgba(245,196,0,0.3);
     }
 
     .name-jp {
-      font-size: 13px;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.2em;
-      margin-bottom: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.25em;
+      margin-bottom: 18px;
       font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
     }
 
-    /* タグライン */
+    /* ===== タグライン ===== */
     .tagline {
-      font-size: 13px;
-      color: rgba(255,255,255,0.55);
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.50);
       text-align: center;
-      line-height: 1.8;
-      margin-bottom: 40px;
-      letter-spacing: 0.05em;
+      line-height: 1.9;
+      margin-bottom: 36px;
+      letter-spacing: 0.06em;
     }
 
     .tagline em {
@@ -136,86 +248,137 @@
       font-weight: 700;
     }
 
-    /* セパレーター */
+    /* ===== セパレーター ===== */
     .sep {
       width: 100%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(245,196,0,0.3), transparent);
-      margin-bottom: 32px;
+      background: linear-gradient(90deg, transparent 0%, rgba(245,196,0,0.25) 30%, rgba(245,196,0,0.35) 50%, rgba(245,196,0,0.25) 70%, transparent 100%);
+      margin-bottom: 28px;
+      position: relative;
     }
 
-    /* リンクボタン */
+    .sep::after {
+      content: '◆';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 8px;
+      color: var(--yellow);
+      background: var(--black);
+      padding: 0 12px;
+      opacity: 0.5;
+    }
+
+    /* ===== セクションラベル ===== */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(245,196,0,0.4);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    /* ===== リンクボタン ===== */
     .links {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .link-btn {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 18px 22px;
-      border: 1.5px solid rgba(245,196,0,0.25);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.03);
+      padding: 16px 20px;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: var(--card-bg);
       color: var(--white);
       text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .link-btn::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(245,196,0,0.08), transparent 60%);
+      background: linear-gradient(135deg, rgba(245,196,0,0.06) 0%, transparent 50%);
       opacity: 0;
-      transition: opacity 0.25s;
+      transition: opacity 0.3s;
+    }
+
+    /* ホバー時にボーダーが光る */
+    .link-btn::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(245,196,0,0.5), transparent 40%, transparent 60%, rgba(245,196,0,0.3));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
     .link-btn:hover {
-      border-color: var(--yellow);
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 8px 32px rgba(245,196,0,0.2), 0 2px 8px rgba(0,0,0,0.4);
-      background: rgba(245,196,0,0.05);
+      border-color: rgba(245,196,0,0.5);
+      transform: translateY(-3px);
+      box-shadow:
+        0 12px 40px rgba(245,196,0,0.15),
+        0 4px 12px rgba(0,0,0,0.4);
+      background: rgba(245,196,0,0.06);
     }
 
     .link-btn:hover::before {
       opacity: 1;
     }
 
+    .link-btn:hover::after {
+      opacity: 1;
+    }
+
     .link-btn:active {
-      transform: translateY(0) scale(0.99);
+      transform: translateY(-1px) scale(0.995);
     }
 
     .link-icon {
       width: 44px;
       height: 44px;
-      border-radius: 10px;
-      background: rgba(245,196,0,0.12);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: background 0.25s;
+      transition: all 0.3s;
+      background: rgba(245,196,0,0.10);
     }
 
     .link-btn:hover .link-icon {
-      background: rgba(245,196,0,0.22);
+      background: rgba(245,196,0,0.20);
+      box-shadow: 0 0 16px rgba(245,196,0,0.15);
     }
 
     .link-icon svg {
       width: 22px;
       height: 22px;
       fill: var(--yellow);
+      transition: transform 0.3s;
+    }
+
+    .link-btn:hover .link-icon svg {
+      transform: scale(1.1);
     }
 
     .link-text {
       flex: 1;
+      min-width: 0;
     }
 
     .link-label {
@@ -228,84 +391,142 @@
 
     .link-sub {
       font-size: 11px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.30);
       font-family: 'Space Mono', monospace;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .link-arrow {
-      color: rgba(245,196,0,0.5);
-      font-size: 18px;
-      transition: transform 0.25s, color 0.25s;
+      color: rgba(245,196,0,0.35);
+      font-size: 16px;
+      transition: all 0.3s;
+      flex-shrink: 0;
     }
 
     .link-btn:hover .link-arrow {
-      transform: translateX(3px);
+      transform: translateX(4px);
       color: var(--yellow);
     }
 
-    /* フッター */
+    /* ===== セクション間スペーサー ===== */
+    .spacer {
+      height: 24px;
+      width: 100%;
+    }
+
+    /* ===== フッター ===== */
     .footer {
-      margin-top: 44px;
+      margin-top: 48px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
 
     .footer-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      color: rgba(255,255,255,0.2);
-      letter-spacing: 0.1em;
+      font-size: 10px;
+      color: rgba(255,255,255,0.18);
+      letter-spacing: 0.12em;
     }
 
     .footer-badge span {
       color: var(--yellow);
-      opacity: 0.5;
+      opacity: 0.35;
+      font-size: 7px;
     }
 
-    /* フェードイン */
+    .footer-copy {
+      font-size: 10px;
+      color: rgba(255,255,255,0.10);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.08em;
+    }
+
+    /* ===== フェードインアニメーション ===== */
     .container > * {
-      animation: fadeUp 0.6s ease forwards;
+      animation: fadeUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
       opacity: 0;
     }
 
-    .icon-area { animation-delay: 0.05s; }
-    .name { animation-delay: 0.1s; }
-    .name-jp { animation-delay: 0.15s; }
-    .tagline { animation-delay: 0.2s; }
-    .sep { animation-delay: 0.25s; }
-    .links { animation-delay: 0.3s; }
-    .footer { animation-delay: 0.4s; }
+    .icon-area        { animation-delay: 0.05s; }
+    .name             { animation-delay: 0.12s; }
+    .name-jp          { animation-delay: 0.18s; }
+    .tagline          { animation-delay: 0.24s; }
+    .sep              { animation-delay: 0.30s; }
+    .section-label:nth-of-type(1) { animation-delay: 0.34s; }
+    .links:nth-of-type(1)         { animation-delay: 0.38s; }
+    .spacer           { animation-delay: 0.42s; }
+    .section-label:nth-of-type(2) { animation-delay: 0.46s; }
+    .links:nth-of-type(2)         { animation-delay: 0.50s; }
+    .footer           { animation-delay: 0.58s; }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== reduced motion ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- 六角形の背景 -->
+  <!-- 背景グロー -->
+  <div class="bg-glow"></div>
+
+  <!-- 六角形グリッド -->
   <div class="hex-bg">
     <svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <defs>
         <pattern id="hex" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
-          <polygon points="30,2 56,16 56,36 30,50 4,36 4,16" fill="none" stroke="#F5C400" stroke-width="1"/>
+          <polygon points="30,2 56,16 56,36 30,50 4,36 4,16" fill="none" stroke="#F5C400" stroke-width="0.8"/>
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#hex)"/>
     </svg>
   </div>
 
+  <!-- 浮遊パーティクル -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
   <div class="container">
 
-    <div class="icon-area">🐝</div>
+    <!-- アイコン -->
+    <div class="icon-area">
+      <div class="orbit-dot"></div>
+      <img src="icon.png" alt="鉢-bit" class="hachi-icon">
+    </div>
 
+    <!-- ブランド名 -->
     <div class="name">鉢-bit</div>
     <div class="name-jp">hachi-bit</div>
 
+    <!-- タグライン -->
     <p class="tagline">
       セメントと3Dプリントで生まれる<br>
       <em>小さな鉢</em>と<em>おもちゃ</em>たち
@@ -313,6 +534,8 @@
 
     <div class="sep"></div>
 
+    <!-- SNS / ブログ -->
+    <div class="section-label">Social</div>
     <div class="links">
 
       <!-- X (Twitter) -->
@@ -359,10 +582,34 @@
 
     </div>
 
+    <div class="spacer"></div>
+
+    <!-- プロジェクト -->
+    <div class="section-label">Project</div>
+    <div class="links">
+
+      <!-- 緑園水位シミュレーション -->
+      <a class="link-btn" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">緑園エリア 浸水シミュレーション</div>
+          <div class="link-sub">3D city × flood sim</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+
+    </div>
+
+    <!-- フッター -->
     <div class="footer">
       <div class="footer-badge">
         <span>◆</span> 鉢-bit / hachi-bit <span>◆</span>
       </div>
+      <div class="footer-copy">&copy; 2025 hachi-bit</div>
     </div>
 
   </div>
