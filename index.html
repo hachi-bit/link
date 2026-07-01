@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>鉢-bit | hachi-bit</title>
-  <meta name="description" content="セメントと3Dプリントで生まれる小さな鉢とおもちゃたち">
+  <meta name="description" content="鉢-bit(hachi-bit / 8-bit) — セメントと3Dプリントで生まれる小さな鉢とおもちゃたち">
   <link rel="icon" href="icon.png">
   <!-- OGP -->
   <meta property="og:title" content="鉢-bit | hachi-bit">
@@ -24,7 +24,7 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "鉢-bit",
-    "alternateName": "hachi-bit",
+    "alternateName": ["hachi-bit", "8-bit"],
     "url": "https://hachi-bit.github.io/",
     "image": "https://hachi-bit.github.io/icon.png",
     "description": "セメントと3Dプリントで生まれる小さな鉢とおもちゃたち",
@@ -46,6 +46,7 @@
       --card-bg: rgba(245, 196, 0, 0.04);
       --card-border: rgba(245, 196, 0, 0.15);
       --teal: #00C9B0;
+      --amber: #E8A43A;
     }
 
     * {
@@ -315,8 +316,6 @@
       transform: translate(-50%, -50%);
       font-size: 8px;
       color: var(--yellow);
-      background: var(--black);
-      padding: 0 12px;
       opacity: 0.5;
     }
 
@@ -331,8 +330,8 @@
       align-self: flex-start;
     }
 
-    .label-project {
-      color: rgba(0, 201, 176, 0.4);
+    .label-fun {
+      color: rgba(232, 164, 58, 0.4);
     }
 
     /* ===== リンクボタン ===== */
@@ -430,49 +429,6 @@
       transform: scale(1.1);
     }
 
-    /* Project セクション カラー */
-    .links-project .link-btn {
-      border-color: rgba(0, 201, 176, 0.15);
-      background: rgba(0, 201, 176, 0.03);
-    }
-
-    .links-project .link-btn:hover {
-      border-color: rgba(0, 201, 176, 0.5);
-      background: rgba(0, 201, 176, 0.06);
-      box-shadow:
-        0 12px 40px rgba(0, 201, 176, 0.12),
-        0 4px 12px rgba(0,0,0,0.4);
-    }
-
-    .links-project .link-btn::before {
-      background: linear-gradient(135deg, rgba(0, 201, 176, 0.06) 0%, transparent 50%);
-    }
-
-    .links-project .link-btn::after {
-      background: linear-gradient(135deg, rgba(0, 201, 176, 0.5), transparent 40%, transparent 60%, rgba(0, 201, 176, 0.3));
-    }
-
-    .links-project .link-icon {
-      background: rgba(0, 201, 176, 0.10);
-    }
-
-    .links-project .link-btn:hover .link-icon {
-      background: rgba(0, 201, 176, 0.20);
-      box-shadow: 0 0 16px rgba(0, 201, 176, 0.15);
-    }
-
-    .links-project .link-icon svg {
-      fill: var(--teal);
-    }
-
-    .links-project .link-arrow {
-      color: rgba(0, 201, 176, 0.35);
-    }
-
-    .links-project .link-btn:hover .link-arrow {
-      color: var(--teal);
-    }
-
     .link-text {
       flex: 1;
       min-width: 0;
@@ -563,11 +519,188 @@
     .spacer           { animation-delay: 0.42s; }
     .section-label:nth-of-type(2) { animation-delay: 0.46s; }
     .links:nth-of-type(2)         { animation-delay: 0.50s; }
-    .footer           { animation-delay: 0.58s; }
+    .fun-area          { animation-delay: 0.56s; }
+    .footer           { animation-delay: 0.64s; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== 成長バッジ（アイコン右下） ===== */
+    .growth-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 28px;
+      height: 28px;
+      background: var(--black);
+      border: 2px solid rgba(232,164,58,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      z-index: 3;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* ===== スタンプ＆コレクションエリア ===== */
+    .fun-area {
+      width: 100%;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .fun-section {
+      padding: 16px 18px;
+      border: 1px solid rgba(232,164,58,0.18);
+      border-radius: 14px;
+      background: rgba(232,164,58,0.04);
+    }
+
+    .fun-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .fun-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(232,164,58,0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .fun-stage {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* スタンプドット */
+    .stamp-track {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .stamp-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(232,164,58,0.10);
+      border: 1px solid rgba(232,164,58,0.15);
+      transition: all 0.3s;
+    }
+
+    .stamp-dot.filled {
+      background: var(--amber);
+      border-color: var(--amber);
+      box-shadow: 0 0 6px rgba(232,164,58,0.4);
+    }
+
+    .stamp-dot.today {
+      animation: stampPop 0.5s ease;
+    }
+
+    @keyframes stampPop {
+      0%   { transform: scale(0); }
+      60%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    /* コレクション */
+    .collection-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .collection-slot {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .collection-slot.empty {
+      color: rgba(255,255,255,0.08);
+      font-size: 10px;
+    }
+
+    .collection-slot.new {
+      animation: slotShine 1s ease;
+      border-color: var(--amber);
+      box-shadow: 0 0 12px rgba(232,164,58,0.3);
+    }
+
+    @keyframes slotShine {
+      0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
+      50%  { transform: scale(1.3) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .gacha-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(232,164,58,0.25);
+      border-radius: 10px;
+      background: rgba(232,164,58,0.06);
+      color: var(--amber);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.05em;
+    }
+
+    .gacha-btn:hover {
+      background: rgba(232,164,58,0.12);
+      box-shadow: 0 4px 16px rgba(232,164,58,0.15);
+      transform: translateY(-1px);
+    }
+
+    .gacha-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .gacha-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .gacha-result {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      min-height: 18px;
+    }
+
+    .gacha-result .new-emoji {
+      font-size: 28px;
+      display: inline-block;
+      animation: slotShine 0.8s ease;
+    }
+
+    .collection-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
     }
 
     /* ===== reduced motion ===== */
@@ -624,6 +757,7 @@
       <div class="icon-clip">
         <img src="icon.png" alt="鉢-bit" class="hachi-icon">
       </div>
+      <div class="growth-badge" id="growthBadge">🌱</div>
     </div>
 
     <!-- ブランド名 -->
@@ -637,6 +771,84 @@
     </p>
 
     <div class="sep"></div>
+
+    <!-- プロジェクト -->
+    <div class="section-label">Project</div>
+    <div class="links">
+
+      <!-- 緑園水位シミュレーション -->
+      <a class="link-btn" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">緑園エリア 浸水シミュレーション</div>
+          <div class="link-sub">3D city × flood sim</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- セメント・モリ -->
+      <a class="link-btn" href="https://x.com/plant_8bit/status/2045335263032074394" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 20h12V10L12 4 6 10v10zm2-2v-7.2l4-3.6 4 3.6V18H8zm3-6h2v2h-2v-2zm-2 4h6v2H9v-2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">セメント・モリ</div>
+          <div class="link-sub">cement pot</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- サボテン型アクセサリースタンド -->
+      <a class="link-btn" href="https://x.com/plant_8bit/status/2038614490498130215" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2c-1.1 0-2 .9-2 2v5H8c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h2v7h4v-7h2c1.1 0 2-.9 2-2v-2c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">サボテン型アクセサリースタンド</div>
+          <div class="link-sub">cactus accessory stand</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- 寿司チョーカー -->
+      <a class="link-btn" href="https://x.com/plant_8bit/status/2038977927652729024" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 5.58 2 10c0 2.13 1.06 4.04 2.72 5.41L4 22l3.5-2.2c1.36.54 2.88.84 4.5.84 5.52 0 10-3.58 10-8S17.52 2 12 2zm-3 9H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">寿司チョーカー</div>
+          <div class="link-sub">sushi choker set</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- プレステラパーツ群 -->
+      <a class="link-btn" href="https://x.com/plant_8bit/status/2070282469698666771" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h8v8h-8v-8zm2 2v4h4v-4h-4z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">プレステラ用アクセサリー『ヤドリギ』</div>
+          <div class="link-sub">prestera accessories</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+    </div>
+
+    <div class="spacer"></div>
 
     <!-- SNS / ブログ -->
     <div class="section-label">Social</div>
@@ -688,23 +900,29 @@
 
     <div class="spacer"></div>
 
-    <!-- プロジェクト -->
-    <div class="section-label label-project">Project</div>
-    <div class="links links-project">
+    <!-- スタンプ＆コレクション -->
+    <div class="section-label label-fun">Fun</div>
+    <div class="fun-area">
 
-      <!-- 緑園水位シミュレーション -->
-      <a class="link-btn" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-          </svg>
+      <!-- 訪問スタンプ -->
+      <div class="fun-section">
+        <div class="fun-header">
+          <div class="fun-title">Visits</div>
+          <div class="fun-stage" id="growthLabel">🌱 seed</div>
         </div>
-        <div class="link-text">
-          <div class="link-label">緑園エリア 浸水シミュレーション</div>
-          <div class="link-sub">3D city × flood sim</div>
+        <div class="stamp-track" id="stampTrack"></div>
+      </div>
+
+      <!-- コレクション -->
+      <div class="fun-section">
+        <div class="fun-header">
+          <div class="fun-title">Collection</div>
+          <div class="collection-count" id="collCount">0 / 24</div>
         </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+        <div class="collection-grid" id="collGrid"></div>
+        <button class="gacha-btn" id="gachaBtn">🎲 今日のガチャを引く</button>
+        <div class="gacha-result" id="gachaResult"></div>
+      </div>
 
     </div>
 
@@ -717,6 +935,157 @@
     </div>
 
   </div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    // ===== 定数 =====
+    var GACHA_POOL = [
+      '🌵','🪴','🌻','🍄','🐝','🌿','🌸','🌺',
+      '🍀','🌾','🌹','🪻','🌷','🎋','🌲','🎍',
+      '🪵','🌳','🍃','🍂','🐛','🦋','🐞','🌼'
+    ];
+
+    var STAGES = [
+      { min: 1,  emoji: '🌱', label: 'seed' },
+      { min: 3,  emoji: '🌿', label: 'sprout' },
+      { min: 7,  emoji: '🍀', label: 'clover' },
+      { min: 14, emoji: '🌸', label: 'bloom' },
+      { min: 30, emoji: '🌻', label: 'full bloom' }
+    ];
+
+    var MAX_STAMPS = 30;
+
+    // ===== ユーティリティ =====
+    function today() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function loadJSON(key, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return v ? JSON.parse(v) : fallback;
+      } catch(e) { return fallback; }
+    }
+
+    function saveJSON(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+    }
+
+    // ===== 訪問トラッキング =====
+    var visits = loadJSON('hb_visits', 0);
+    var lastDay = loadJSON('hb_lastDay', '');
+    var isNewDay = lastDay !== today();
+
+    if (isNewDay) {
+      visits++;
+      saveJSON('hb_visits', visits);
+      saveJSON('hb_lastDay', today());
+    }
+
+    // ===== 成長ステージ =====
+    function getStage(count) {
+      var stage = STAGES[0];
+      for (var i = 0; i < STAGES.length; i++) {
+        if (count >= STAGES[i].min) stage = STAGES[i];
+      }
+      return stage;
+    }
+
+    var stage = getStage(visits);
+    document.getElementById('growthBadge').textContent = stage.emoji;
+    document.getElementById('growthLabel').textContent = stage.emoji + ' ' + stage.label;
+
+    // ===== スタンプ描画 =====
+    var track = document.getElementById('stampTrack');
+    var dots = Math.min(visits, MAX_STAMPS);
+    for (var i = 0; i < MAX_STAMPS; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'stamp-dot';
+      if (i < dots) {
+        dot.classList.add('filled');
+        if (i === dots - 1 && isNewDay) {
+          dot.classList.add('today');
+        }
+      }
+      track.appendChild(dot);
+    }
+
+    // ===== ガチャ =====
+    var collection = loadJSON('hb_collection', []);
+    var gachaDay = loadJSON('hb_gachaDay', '');
+    var alreadyDrawn = gachaDay === today();
+
+    function renderCollection() {
+      var grid = document.getElementById('collGrid');
+      grid.innerHTML = '';
+      // 全プールを表示、持ってるやつは絵文字、ないやつは？
+      GACHA_POOL.forEach(function(emoji) {
+        var slot = document.createElement('div');
+        slot.className = 'collection-slot';
+        var owned = collection.indexOf(emoji) !== -1;
+        if (owned) {
+          slot.textContent = emoji;
+        } else {
+          slot.classList.add('empty');
+          slot.textContent = '？';
+        }
+        grid.appendChild(slot);
+      });
+      document.getElementById('collCount').textContent = collection.length + ' / ' + GACHA_POOL.length;
+    }
+
+    function drawGacha() {
+      if (alreadyDrawn) return;
+
+      // 未所持を優先、全部持ってたらランダム
+      var pool = GACHA_POOL.filter(function(e) {
+        return collection.indexOf(e) === -1;
+      });
+      if (pool.length === 0) pool = GACHA_POOL;
+
+      var pick = pool[Math.floor(Math.random() * pool.length)];
+      var isNew = collection.indexOf(pick) === -1;
+
+      if (isNew) {
+        collection.push(pick);
+        saveJSON('hb_collection', collection);
+      }
+
+      alreadyDrawn = true;
+      saveJSON('hb_gachaDay', today());
+
+      // 結果表示
+      var result = document.getElementById('gachaResult');
+      result.innerHTML = '<span class="new-emoji">' + pick + '</span><br>' +
+        (isNew ? 'New！コレクションに追加！' : 'もう持ってるやつやった…');
+
+      // ボタン無効化
+      var btn = document.getElementById('gachaBtn');
+      btn.disabled = true;
+      btn.textContent = '✓ また明日！';
+
+      // コレクション再描画（新しいやつにアニメーション）
+      renderCollection();
+      if (isNew) {
+        var idx = GACHA_POOL.indexOf(pick);
+        var slots = document.getElementById('collGrid').children;
+        if (slots[idx]) slots[idx].classList.add('new');
+      }
+    }
+
+    renderCollection();
+
+    var btn = document.getElementById('gachaBtn');
+    if (alreadyDrawn) {
+      btn.disabled = true;
+      btn.textContent = '✓ また明日！';
+    }
+    btn.addEventListener('click', drawGacha);
+
+  })();
+  </script>
 
 </body>
 </html>
