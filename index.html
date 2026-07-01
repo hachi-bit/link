@@ -331,7 +331,7 @@
     }
 
     .label-fun {
-      color: rgba(232, 164, 58, 0.4);
+      color: rgba(0, 201, 176, 0.6);
     }
 
     /* ===== リンクボタン ===== */
@@ -363,7 +363,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(245,196,0,0.06) 0%, transparent 50%);
+      background: linear-gradient(135deg, rgba(245,196,0,0.06) 0%, transparent 30%);
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -374,7 +374,7 @@
       position: absolute;
       inset: -1px;
       border-radius: 16px;
-      background: linear-gradient(135deg, rgba(245,196,0,0.5), transparent 40%, transparent 60%, rgba(245,196,0,0.3));
+      background: linear-gradient(135deg, rgba(245,196,0,0.5), transparent 25%, transparent 75%, rgba(245,196,0,0.3));
       z-index: -1;
       opacity: 0;
       transition: opacity 0.3s;
@@ -535,7 +535,7 @@
       width: 28px;
       height: 28px;
       background: var(--black);
-      border: 2px solid rgba(232,164,58,0.5);
+      border: 2px solid rgba(0,201,176,0.5);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -556,9 +556,43 @@
 
     .fun-section {
       padding: 16px 18px;
-      border: 1px solid rgba(232,164,58,0.18);
+      border: 1px solid rgba(0,201,176,0.25);
       border-radius: 14px;
-      background: rgba(232,164,58,0.04);
+      background: rgba(0,201,176,0.04);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fun-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,201,176,0.06), transparent 18%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .fun-section::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,201,176,0.35), transparent 15%, transparent 85%, rgba(0,201,176,0.2));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .fun-section:hover {
+      border-color: rgba(0,201,176,0.50);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,201,176,0.10), 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .fun-section:hover::before,
+    .fun-section:hover::after {
+      opacity: 1;
     }
 
     .fun-header {
@@ -566,19 +600,20 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
     }
 
     .fun-title {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      color: rgba(232,164,58,0.5);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.03em;
     }
 
     .fun-stage {
       font-size: 11px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.7);
       font-family: 'Space Mono', monospace;
     }
 
@@ -587,21 +622,23 @@
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     .stamp-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: rgba(232,164,58,0.10);
-      border: 1px solid rgba(232,164,58,0.15);
+      background: rgba(0,201,176,0.10);
+      border: 1px solid rgba(0,201,176,0.15);
       transition: all 0.3s;
     }
 
     .stamp-dot.filled {
-      background: var(--amber);
-      border-color: var(--amber);
-      box-shadow: 0 0 6px rgba(232,164,58,0.4);
+      background: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 0 6px rgba(0,201,176,0.4);
     }
 
     .stamp-dot.today {
@@ -619,6 +656,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
+      position: relative;
+      z-index: 1;
     }
 
     .collection-slot {
@@ -634,14 +673,14 @@
     }
 
     .collection-slot.empty {
-      color: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.15);
       font-size: 10px;
     }
 
     .collection-slot.new {
       animation: slotShine 1s ease;
-      border-color: var(--amber);
-      box-shadow: 0 0 12px rgba(232,164,58,0.3);
+      border-color: var(--teal);
+      box-shadow: 0 0 12px rgba(0,201,176,0.3);
     }
 
     @keyframes slotShine {
@@ -654,21 +693,23 @@
       margin-top: 10px;
       width: 100%;
       padding: 10px;
-      border: 1px solid rgba(232,164,58,0.25);
+      border: 1px solid rgba(0,201,176,0.30);
       border-radius: 10px;
-      background: rgba(232,164,58,0.06);
-      color: var(--amber);
+      background: rgba(0,201,176,0.08);
+      color: var(--teal);
       font-family: 'Zen Maru Gothic', sans-serif;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.25s;
       letter-spacing: 0.05em;
+      position: relative;
+      z-index: 1;
     }
 
     .gacha-btn:hover {
-      background: rgba(232,164,58,0.12);
-      box-shadow: 0 4px 16px rgba(232,164,58,0.15);
+      background: rgba(0,201,176,0.15);
+      box-shadow: 0 4px 16px rgba(0,201,176,0.2);
       transform: translateY(-1px);
     }
 
@@ -677,7 +718,7 @@
     }
 
     .gacha-btn:disabled {
-      opacity: 0.3;
+      opacity: 0.4;
       cursor: default;
       transform: none;
       box-shadow: none;
@@ -687,7 +728,7 @@
       text-align: center;
       margin-top: 10px;
       font-size: 12px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.6);
       min-height: 18px;
     }
 
@@ -700,7 +741,7 @@
     .collection-count {
       font-family: 'Space Mono', monospace;
       font-size: 10px;
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
     }
 
     /* ===== reduced motion ===== */
@@ -772,8 +813,8 @@
 
     <div class="sep"></div>
 
-    <!-- プロジェクト -->
-    <div class="section-label">Project</div>
+    <!-- Lab（デジタル作品） -->
+    <div class="section-label">Lab</div>
     <div class="links">
 
       <!-- 緑園水位シミュレーション -->
@@ -789,6 +830,14 @@
         </div>
         <div class="link-arrow" aria-hidden="true">→</div>
       </a>
+
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- Works（物理作品） -->
+    <div class="section-label">Product</div>
+    <div class="links">
 
       <!-- セメント・モリ -->
       <a class="link-btn" href="https://x.com/plant_8bit/status/2045335263032074394" target="_blank" rel="noopener">
@@ -832,7 +881,7 @@
         <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
-      <!-- プレステラパーツ群 -->
+      <!-- プレステラ用パーツ『ヤドリギ』 -->
       <a class="link-btn" href="https://x.com/plant_8bit/status/2070282469698666771" target="_blank" rel="noopener">
         <div class="link-icon">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -841,7 +890,7 @@
         </div>
         <div class="link-text">
           <div class="link-label">プレステラ用パーツ『ヤドリギ』</div>
-          <div class="link-sub">prestera accessories</div>
+          <div class="link-sub">prestera parts</div>
         </div>
         <div class="link-arrow" aria-hidden="true">→</div>
       </a>
@@ -850,7 +899,7 @@
 
     <div class="spacer"></div>
 
-    <!-- SNS / ブログ -->
+    <!-- Social -->
     <div class="section-label">Social</div>
     <div class="links">
 
@@ -900,7 +949,7 @@
 
     <div class="spacer"></div>
 
-    <!-- スタンプ＆コレクション -->
+    <!-- Fun -->
     <div class="section-label label-fun">Fun</div>
     <div class="fun-area">
 
