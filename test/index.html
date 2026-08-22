@@ -3,498 +3,1295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>鉢-bit | hachi-bit (test)</title>
+  <title>鉢-bit | hachi-bit (旧デザイン・アーカイブ)</title>
   <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="鉢-bit(hachi-bit / 8-bit) — つくるを遊ぶ 遊びをつくる（旧デザイン）">
   <link rel="icon" href="../icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --ink: #14161a;
-      --sub: #5a6270;
-      --line: #e7e9ee;
-      --bg: #ffffff;
-      --bg-soft: #f6f7f9;
-      --accent: #2f6bff;
-      --accent-soft: rgba(47,107,255,0.08);
-      --accent-border: rgba(47,107,255,0.25);
+      --black: #0a0a0a;
       --yellow: #F5C400;
+      --yellow-dark: #D4A800;
+      --yellow-light: #FFF3B0;
+      --white: #FAFAF5;
+      --gray: #1a1a1a;
+      --card-bg: rgba(245, 196, 0, 0.04);
+      --card-border: rgba(245, 196, 0, 0.15);
+      --teal: #00C9B0;
+      --amber: #E8A43A;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      background: var(--bg);
-      color: var(--ink);
+      background-color: var(--black);
+      color: var(--white);
       font-family: 'Zen Maru Gothic', sans-serif;
-      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
     }
 
-    .test-badge {
+    .archive-badge {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 10;
-      background: var(--ink);
-      color: #fff;
+      background: var(--teal);
+      color: var(--black);
       text-align: center;
       font-family: 'Space Mono', monospace;
       font-size: 11px;
+      font-weight: 700;
       letter-spacing: 0.1em;
       padding: 6px;
     }
 
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 64px 24px 80px;
+    /* ===== 背景レイヤー ===== */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
     }
 
-    /* ===== Hero ===== */
-    .hero {
+    .bg-glow::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      top: -15%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(245,196,0,0.10) 0%, transparent 65%);
+      animation: glowDrift1 12s ease-in-out infinite;
+    }
+
+    .bg-glow::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      bottom: -10%;
+      right: -10%;
+      background: radial-gradient(circle, rgba(245,196,0,0.07) 0%, transparent 65%);
+      animation: glowDrift2 15s ease-in-out infinite;
+    }
+
+    @keyframes glowDrift1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, 30px); }
+    }
+
+    @keyframes glowDrift2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-30px, -40px); }
+    }
+
+    /* 六角形グリッド背景 */
+    .hex-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hex-bg svg {
+      width: 120%;
+      height: 120%;
+      margin: -10%;
+      opacity: 0.035;
+      animation: hexDrift 30s ease-in-out infinite;
+    }
+
+    @keyframes hexDrift {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.035; }
+      25%      { opacity: 0.05; }
+      50%      { transform: translate(-8px, -6px) rotate(1.5deg); opacity: 0.035; }
+      75%      { opacity: 0.05; }
+    }
+
+    /* 浮遊パーティクル */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--yellow);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+
+    .particle:nth-child(1)  { left:  8%; animation-duration: 18s; animation-delay: 0s; }
+    .particle:nth-child(2)  { left: 22%; animation-duration: 22s; animation-delay: 3s; }
+    .particle:nth-child(3)  { left: 38%; animation-duration: 16s; animation-delay: 6s; }
+    .particle:nth-child(4)  { left: 55%; animation-duration: 20s; animation-delay: 1s; }
+    .particle:nth-child(5)  { left: 70%; animation-duration: 24s; animation-delay: 4s; }
+    .particle:nth-child(6)  { left: 85%; animation-duration: 19s; animation-delay: 8s; }
+    .particle:nth-child(7)  { left: 15%; animation-duration: 21s; animation-delay: 10s; }
+    .particle:nth-child(8)  { left: 48%; animation-duration: 17s; animation-delay: 5s; }
+    .particle:nth-child(9)  { left: 62%; animation-duration: 23s; animation-delay: 7s; }
+    .particle:nth-child(10) { left: 92%; animation-duration: 20s; animation-delay: 2s; }
+
+    @keyframes particleFloat {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.6; transform: translateY(90vh) scale(1); }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+    }
+
+    /* ===== メインコンテナ ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      padding: 48px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ===== アイコン ===== */
+    .icon-area {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #F5C400, #D4A800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      position: relative;
+      box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 5px rgba(245,196,0,0.6),
+        0 0 40px rgba(245,196,0,0.25),
+        0 4px 20px rgba(0,0,0,0.5);
+      animation: iconPulse 4s ease-in-out infinite;
+    }
+
+    .icon-area .icon-clip {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(145deg, #F5C400, #D4A800);
+    }
+
+    .icon-area .hachi-icon {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+
+    .icon-area::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(245,196,0,0.15);
+      animation: ringRotate 20s linear infinite;
+    }
+
+    .icon-area::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.20), transparent 55%);
+      z-index: 2;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { box-shadow: 0 0 0 3px var(--black), 0 0 0 5px rgba(245,196,0,0.6), 0 0 40px rgba(245,196,0,0.25), 0 4px 20px rgba(0,0,0,0.5); }
+      50%      { box-shadow: 0 0 0 3px var(--black), 0 0 0 5px rgba(245,196,0,0.8), 0 0 60px rgba(245,196,0,0.4), 0 4px 20px rgba(0,0,0,0.5); }
+    }
+
+    @keyframes ringRotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* 軌道ドット */
+    .orbit-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: var(--yellow);
+      border-radius: 50%;
+      top: -12px;
+      left: 50%;
+      transform-origin: 50% calc(50% + 64px);
+      animation: ringRotate 20s linear infinite;
+      box-shadow: 0 0 8px rgba(245,196,0,0.8);
+    }
+
+    /* ===== 名前 ===== */
+    .name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 30px;
+      letter-spacing: 0.06em;
+      color: var(--yellow);
+      margin-bottom: 4px;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(245,196,0,0.3);
+    }
+
+    .name-jp {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.25em;
+      margin-bottom: 18px;
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+    }
+
+    /* ===== 肩書き ===== */
+    .role {
+      font-size: 12px;
+      color: rgba(245,196,0,0.6);
+      text-align: center;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    /* ===== タグライン ===== */
+    .tagline {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.50);
+      text-align: center;
+      line-height: 1.9;
+      margin-bottom: 36px;
+      letter-spacing: 0.06em;
+    }
+
+    .tagline em {
+      color: var(--yellow);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    /* ===== セパレーター ===== */
+    .sep {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(245,196,0,0.25) 30%, rgba(245,196,0,0.35) 50%, rgba(245,196,0,0.25) 70%, transparent 100%);
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .sep::after {
+      content: '◆';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 8px;
+      color: var(--yellow);
+      opacity: 0.5;
+    }
+
+    /* ===== セクションラベル ===== */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(245,196,0,0.4);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    .label-fun {
+      color: rgba(0, 201, 176, 0.6);
+    }
+
+    /* ===== リンクボタン ===== */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link-btn {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 8px;
-    }
-
-    .hero img {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .hero-name {
-      font-family: 'Space Mono', monospace;
-      font-weight: 700;
-      font-size: 22px;
-      letter-spacing: 0.02em;
-    }
-
-    .hero-role {
-      font-size: 13px;
-      color: var(--accent);
-      font-weight: 700;
-      margin-top: 2px;
-    }
-
-    h1.headline {
-      font-size: 40px;
-      font-weight: 900;
-      line-height: 1.5;
-      letter-spacing: -0.01em;
-      text-align: center;
-      margin: 28px 0 12px;
-    }
-
-    h1.headline em {
-      font-style: normal;
-      color: var(--accent);
-    }
-
-    .sub {
-      font-size: 15px;
-      color: var(--sub);
-      margin-bottom: 40px;
-    }
-
-    /* ===== セクション ===== */
-    .section {
-      margin-bottom: 48px;
-    }
-
-    .section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--sub);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-label::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    /* ===== カード（アコーディオン風の明快なリスト） ===== */
-    .item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
+      padding: 16px 20px;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: var(--card-bg);
+      color: var(--white);
       text-decoration: none;
-      color: var(--ink);
-      background: #fff;
-      margin-bottom: 10px;
-      transition: border-color 0.15s, background 0.15s;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
-    .item:hover {
-      border-color: var(--accent-border);
-      background: var(--accent-soft);
+    .link-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(245,196,0,0.06) 0%, transparent 30%);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
-    .item-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
-      background: var(--bg-soft);
+    /* ホバー時にボーダーが光る */
+    .link-btn::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(245,196,0,0.5), transparent 25%, transparent 75%, rgba(245,196,0,0.3));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .link-btn:hover {
+      border-color: rgba(245,196,0,0.5);
+      transform: translateY(-3px);
+      box-shadow:
+        0 12px 40px rgba(245,196,0,0.15),
+        0 4px 12px rgba(0,0,0,0.4);
+      background: rgba(245,196,0,0.06);
+    }
+
+    .link-btn:hover::before {
+      opacity: 1;
+    }
+
+    .link-btn:hover::after {
+      opacity: 1;
+    }
+
+    .link-btn:active {
+      transform: translateY(-1px) scale(0.995);
+    }
+
+    .link-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 17px;
+      transition: all 0.3s;
+      background: rgba(245,196,0,0.10);
     }
 
-    .item:hover .item-icon {
-      background: var(--accent-soft);
+    .link-btn:hover .link-icon {
+      background: rgba(245,196,0,0.20);
+      box-shadow: 0 0 16px rgba(245,196,0,0.15);
     }
 
-    .item-body { flex: 1; min-width: 0; }
+    .link-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--yellow);
+      transition: transform 0.3s;
+    }
 
-    .item-title {
+    .link-btn:hover .link-icon svg {
+      transform: scale(1.1);
+    }
+
+    .link-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-label {
       font-size: 15px;
       font-weight: 700;
+      color: var(--white);
       margin-bottom: 2px;
+      letter-spacing: 0.03em;
     }
 
-    .item-desc {
-      font-size: 12.5px;
-      color: var(--sub);
+    .link-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.30);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .item-arrow {
-      color: var(--sub);
-      font-size: 14px;
+    .link-arrow {
+      color: rgba(245,196,0,0.35);
+      font-size: 16px;
+      transition: all 0.3s;
       flex-shrink: 0;
-      transition: transform 0.2s;
     }
 
-    .item:hover .item-arrow {
-      color: var(--accent);
+    .link-btn:hover .link-arrow {
+      transform: translateX(4px);
+      color: var(--yellow);
     }
 
-    /* ===== 展開式アイテム（Product：ELI5→もっと詳しく） ===== */
-    .expand {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      margin-bottom: 10px;
-      overflow: hidden;
+    /* ===== セクション間スペーサー ===== */
+    .spacer {
+      height: 24px;
+      width: 100%;
     }
 
-    .expand-head {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      cursor: pointer;
-      background: #fff;
-      transition: background 0.15s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .expand-head:hover { background: var(--accent-soft); }
-
-    .expand.open .expand-head { background: var(--accent-soft); }
-
-    .expand.open .item-arrow { transform: rotate(90deg); color: var(--accent); }
-
-    .expand-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.25s ease;
-      background: var(--bg-soft);
-    }
-
-    .expand.open .expand-body {
-      max-height: 260px;
-    }
-
-    .expand-body-inner {
-      padding: 4px 16px 18px 66px;
-    }
-
-    .expand-detail {
-      font-size: 13px;
-      color: var(--sub);
-      line-height: 1.8;
-      margin-bottom: 12px;
-      white-space: pre-line;
-    }
-
-    .expand-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    /* ===== Contact（answer-engineのヒーロー的な強調ブロック） ===== */
-    .contact-block {
-      border: 1px solid var(--line);
+    /* ===== 名刺カード ===== */
+    .meishi-card {
+      width: 100%;
+      padding: 22px 20px;
+      border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 28px 24px;
-      background: var(--bg-soft);
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
-    .contact-name {
+    .meishi-name {
       font-family: 'Space Mono', monospace;
       font-weight: 700;
       font-size: 18px;
+      color: var(--yellow);
+      letter-spacing: 0.04em;
       margin-bottom: 14px;
     }
 
-    .contact-email {
-      display: inline-block;
-      font-size: 13px;
-      color: var(--sub);
+    .meishi-email {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.6);
       font-family: 'Space Mono', monospace;
       text-decoration: none;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      transition: color 0.2s;
     }
 
-    .contact-email:hover { color: var(--accent); }
+    .meishi-email:hover {
+      color: var(--yellow);
+    }
 
-    .contact-btn {
+    .meishi-save-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(245,196,0,0.35);
+      border-radius: 12px;
+      background: rgba(245,196,0,0.10);
+      color: var(--yellow);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .meishi-save-btn:hover {
+      background: rgba(245,196,0,0.18);
+      transform: translateY(-1px);
+    }
+
+    .meishi-save-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* ===== フッター ===== */
+    .footer {
+      margin-top: 48px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 24px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-      text-decoration: none;
-      transition: opacity 0.15s;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.18);
+      letter-spacing: 0.12em;
     }
 
-    .contact-btn:hover { opacity: 0.85; }
+    .footer-badge span {
+      color: var(--yellow);
+      opacity: 0.35;
+      font-size: 7px;
+    }
 
-    .footer {
-      text-align: center;
-      font-size: 11px;
-      color: var(--sub);
+    .footer-copy {
+      font-size: 10px;
+      color: rgba(255,255,255,0.10);
       font-family: 'Space Mono', monospace;
-      margin-top: 56px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ===== フェードインアニメーション ===== */
+    .container > * {
+      animation: fadeUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      opacity: 0;
+    }
+
+    .icon-area        { animation-delay: 0.05s; }
+    .name             { animation-delay: 0.12s; }
+    .name-jp          { animation-delay: 0.16s; }
+    .role             { animation-delay: 0.20s; }
+    .tagline          { animation-delay: 0.24s; }
+    .sep              { animation-delay: 0.30s; }
+    .spacer           { animation-delay: 0.30s; }
+    .section-label:nth-of-type(1) { animation-delay: 0.34s; }
+    .links:nth-of-type(1)         { animation-delay: 0.38s; }
+    .section-label:nth-of-type(2) { animation-delay: 0.42s; }
+    .links:nth-of-type(2)         { animation-delay: 0.46s; }
+    .section-label:nth-of-type(3) { animation-delay: 0.50s; }
+    .links:nth-of-type(3)         { animation-delay: 0.54s; }
+    .section-label:nth-of-type(4) { animation-delay: 0.58s; }
+    .meishi-card       { animation-delay: 0.62s; }
+    .fun-area          { animation-delay: 0.68s; }
+    .footer           { animation-delay: 0.76s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== 成長バッジ（アイコン右下） ===== */
+    .growth-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 28px;
+      height: 28px;
+      background: var(--black);
+      border: 2px solid rgba(0,201,176,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      z-index: 3;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* ===== スタンプ＆コレクションエリア ===== */
+    .fun-area {
+      width: 100%;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .fun-section {
+      padding: 16px 18px;
+      border: 1px solid rgba(0,201,176,0.25);
+      border-radius: 14px;
+      background: rgba(0,201,176,0.04);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fun-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,201,176,0.06), transparent 18%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .fun-section::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,201,176,0.35), transparent 15%, transparent 85%, rgba(0,201,176,0.2));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .fun-section:hover {
+      border-color: rgba(0,201,176,0.50);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,201,176,0.10), 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .fun-section:hover::before,
+    .fun-section:hover::after {
+      opacity: 1;
+    }
+
+    .fun-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .fun-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.03em;
+    }
+
+    .fun-stage {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* スタンプドット */
+    .stamp-track {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stamp-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(0,201,176,0.10);
+      border: 1px solid rgba(0,201,176,0.15);
+      transition: all 0.3s;
+    }
+
+    .stamp-dot.filled {
+      background: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 0 6px rgba(0,201,176,0.4);
+    }
+
+    .stamp-dot.today {
+      animation: stampPop 0.5s ease;
+    }
+
+    @keyframes stampPop {
+      0%   { transform: scale(0); }
+      60%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    /* コレクション */
+    .collection-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .collection-slot {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .collection-slot.empty {
+      color: rgba(255,255,255,0.15);
+      font-size: 10px;
+    }
+
+    .collection-slot.new {
+      animation: slotShine 1s ease;
+      border-color: var(--teal);
+      box-shadow: 0 0 12px rgba(0,201,176,0.3);
+    }
+
+    @keyframes slotShine {
+      0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
+      50%  { transform: scale(1.3) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .gacha-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(0,201,176,0.30);
+      border-radius: 10px;
+      background: rgba(0,201,176,0.08);
+      color: var(--teal);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
       letter-spacing: 0.05em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gacha-btn:hover {
+      background: rgba(0,201,176,0.15);
+      box-shadow: 0 4px 16px rgba(0,201,176,0.2);
+      transform: translateY(-1px);
+    }
+
+    .gacha-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .gacha-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .gacha-result {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      min-height: 18px;
+    }
+
+    .gacha-result .new-emoji {
+      font-size: 28px;
+      display: inline-block;
+      animation: slotShine 0.8s ease;
+    }
+
+    .collection-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ===== reduced motion ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="test-badge">TEST BUILD — eli5.cc風デザイン試作（本番には影響しません）</div>
+  <div class="archive-badge">旧デザイン・アーカイブ（現在の本番ではありません）</div>
+
+  <!-- 背景グロー -->
+  <div class="bg-glow"></div>
+
+  <!-- 六角形グリッド -->
+  <div class="hex-bg">
+    <svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="hex" x="0" y="0" width="42" height="72" patternUnits="userSpaceOnUse">
+          <!-- Row 1 -->
+          <polygon points="21,0 42,12 42,36 21,48 0,36 0,12" fill="none" stroke="#F5C400" stroke-width="0.8"/>
+          <!-- Row 2 (offset) - left -->
+          <polygon points="0,36 21,48 21,72 0,84 -21,72 -21,48" fill="none" stroke="#F5C400" stroke-width="0.8"/>
+          <!-- Row 2 (offset) - right -->
+          <polygon points="42,36 63,48 63,72 42,84 21,72 21,48" fill="none" stroke="#F5C400" stroke-width="0.8"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex)"/>
+    </svg>
+  </div>
+
+  <!-- 浮遊パーティクル -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
 
   <div class="container">
 
-    <!-- Hero -->
-    <div class="hero">
-      <img src="../icon.png" alt="鉢-bit">
-      <div>
-        <div class="hero-name">鉢-bit / hachi-bit</div>
-        <div class="hero-role">プランターメイカー / デジタルクリエイター</div>
+    <!-- アイコン -->
+    <div class="icon-area">
+      <div class="orbit-dot"></div>
+      <div class="icon-clip">
+        <img src="../icon.png" alt="鉢-bit" class="hachi-icon">
       </div>
+      <div class="growth-badge" id="growthBadge">🌱</div>
     </div>
 
-    <h1 class="headline">つくるを<em>遊ぶ</em><br><em>遊び</em>をつくる</h1>
-    <p class="sub">セメント・石膏・3Dプリンタで、ちょっと変な鉢や小物を作っている人。あと空き時間でWebやVRのおもちゃも作っている。作品はどれも「まず一言→気になったらタップで詳しく」で見られる。</p>
+    <!-- ブランド名 -->
+    <div class="name">鉢-bit</div>
+    <div class="name-jp">hachi-bit</div>
 
-    <!-- Product -->
-    <div class="section">
-      <div class="section-label">Product</div>
+    <!-- 肩書き -->
+    <div class="role">プランターメイカー / デジタルクリエイター</div>
 
-      <div class="expand">
-        <div class="expand-head" onclick="toggleExpand(this)">
-          <div class="item-icon">🪴</div>
-          <div class="item-body">
-            <div class="item-title">セメント・モリ</div>
-            <div class="item-desc">育てるほどに表情が変わる鉢</div>
-          </div>
-          <div class="item-arrow">›</div>
-        </div>
-        <div class="expand-body">
-          <div class="expand-body-inner">
-            <div class="expand-detail">素材は石膏。使うほど少しずつ欠けて表情が変わっていく、"育てる鉢"。
-名前は cement（セメント）× memento mori（死を想え）の言葉遊びから。
-完成した瞬間がゴールではなく、朽ちていく過程そのものを楽しむ一点物。</div>
-            <a class="expand-link" href="../cement-mori/index.html">くわしいページを見る →</a>
-          </div>
-        </div>
-      </div>
+    <!-- タグライン -->
+    <p class="tagline">
+      つくるを遊ぶ　遊びをつくる
+    </p>
 
-      <div class="expand">
-        <div class="expand-head" onclick="toggleExpand(this)">
-          <div class="item-icon">🌵</div>
-          <div class="item-body">
-            <div class="item-title">サボテン型アクセサリースタンド</div>
-            <div class="item-desc">ピアスやリングをちょこんと引っ掛ける</div>
-          </div>
-          <div class="item-arrow">›</div>
-        </div>
-        <div class="expand-body">
-          <div class="expand-body-inner">
-            <div class="expand-detail">サボテンの形をしたアクセサリースタンド。トゲの部分にピアスやリングをちょこんと引っ掛けられる。3Dプリンタ製。</div>
-            <a class="expand-link" href="../cactus-stand/index.html">くわしいページを見る →</a>
-          </div>
-        </div>
-      </div>
+    <div class="sep"></div>
 
-      <div class="expand">
-        <div class="expand-head" onclick="toggleExpand(this)">
-          <div class="item-icon">🍣</div>
-          <div class="item-body">
-            <div class="item-title">寿司チョーカー</div>
-            <div class="item-desc">お寿司を身につける、ユーモラスな一品</div>
-          </div>
-          <div class="item-arrow">›</div>
-        </div>
-        <div class="expand-body">
-          <div class="expand-body-inner">
-            <div class="expand-detail">お寿司モチーフのチョーカーセット。ネタが首元にちょこんと乗る、ちょっとユーモラスで目を引くアクセサリー。3Dプリンタ製。</div>
-            <a class="expand-link" href="../sushi-choker/index.html">くわしいページを見る →</a>
-          </div>
-        </div>
-      </div>
+    <!-- Works（物理作品） -->
+    <div class="section-label">Product</div>
+    <div class="links">
 
-      <div class="expand">
-        <div class="expand-head" onclick="toggleExpand(this)">
-          <div class="item-icon">🌿</div>
-          <div class="item-body">
-            <div class="item-title">プレステラ用パーツ『ヤドリギ』</div>
-            <div class="item-desc">鉢にちょこんと宿るパーツ</div>
-          </div>
-          <div class="item-arrow">›</div>
+      <!-- セメント・モリ -->
+      <a class="link-btn" href="../cement-mori/index.html">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 20h12V10L12 4 6 10v10zm2-2v-7.2l4-3.6 4 3.6V18H8zm3-6h2v2h-2v-2zm-2 4h6v2H9v-2z"/>
+          </svg>
         </div>
-        <div class="expand-body">
-          <div class="expand-body-inner">
-            <div class="expand-detail">園芸でおなじみのプレステラ鉢に取り付けられるオリジナルパーツ。名前の通り、鉢に宿るヤドリギのようなデザイン。3Dプリンタ製。</div>
-            <a class="expand-link" href="../yadorigi/index.html">くわしいページを見る →</a>
-          </div>
+        <div class="link-text">
+          <div class="link-label">セメント・モリ</div>
+          <div class="link-sub">育てるほどに表情が変わる鉢</div>
         </div>
-      </div>
-
-      <div class="expand">
-        <div class="expand-head" onclick="toggleExpand(this)">
-          <div class="item-icon">📎</div>
-          <div class="item-body">
-            <div class="item-title">マグ根っこ</div>
-            <div class="item-desc">葉っぱのクリップでメモを挟む根っこ</div>
-          </div>
-          <div class="item-arrow">›</div>
-        </div>
-        <div class="expand-body">
-          <div class="expand-body-inner">
-            <div class="expand-detail">根っこのような丸い土台に、葉っぱ型のクリップが生えたメモホルダー。土台のスリットにメモやカードも挟める。3Dプリンタ製。</div>
-            <a class="expand-link" href="../mag-nekko/index.html">くわしいページを見る →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="expand">
-        <div class="expand-head" onclick="toggleExpand(this)">
-          <div class="item-icon">🍱</div>
-          <div class="item-body">
-            <div class="item-title">セルフ回転ずし</div>
-            <div class="item-desc">振動だけで自走する寿司型ロボット</div>
-          </div>
-          <div class="item-arrow">›</div>
-        </div>
-        <div class="expand-body">
-          <div class="expand-body-inner">
-            <div class="expand-detail">3Dプリンタで作った寿司型の振動ロボット。モーターと電池を内蔵していて、振動の力で円を描くように自分で前進する。
-「決められたレーンを回るのには、飽きたのさ。」</div>
-            <a class="expand-link" href="../self-sushi/index.html">くわしいページを見る →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lab -->
-    <div class="section">
-      <div class="section-label">Lab</div>
-
-      <a class="item" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
-        <div class="item-icon">🌊</div>
-        <div class="item-body">
-          <div class="item-title">緑園エリア 浸水シミュレーション</div>
-          <div class="item-desc">3D city × flood sim</div>
-        </div>
-        <div class="item-arrow">→</div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
-      <a class="item" href="https://hachi-bit.github.io/vr/" target="_blank" rel="noopener">
-        <div class="item-icon">🥽</div>
-        <div class="item-body">
-          <div class="item-title">VR</div>
-          <div class="item-desc">WebVR experience</div>
+      <!-- サボテン型アクセサリースタンド -->
+      <a class="link-btn" href="../cactus-stand/index.html">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2c-1.1 0-2 .9-2 2v5H8c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h2v7h4v-7h2c1.1 0 2-.9 2-2v-2c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2z"/>
+          </svg>
         </div>
-        <div class="item-arrow">→</div>
+        <div class="link-text">
+          <div class="link-label">サボテン型アクセサリースタンド</div>
+          <div class="link-sub">ピアスやリングをちょこんと引っ掛ける</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
 
-      <a class="item" href="https://hand-drawing-app.vercel.app/" target="_blank" rel="noopener">
-        <div class="item-icon">✏️</div>
-        <div class="item-body">
-          <div class="item-title">手描きアプリ</div>
-          <div class="item-desc">hand tracking drawing</div>
+      <!-- 寿司チョーカー -->
+      <a class="link-btn" href="../sushi-choker/index.html">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 5.58 2 10c0 2.13 1.06 4.04 2.72 5.41L4 22l3.5-2.2c1.36.54 2.88.84 4.5.84 5.52 0 10-3.58 10-8S17.52 2 12 2zm-3 9H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+          </svg>
         </div>
-        <div class="item-arrow">→</div>
+        <div class="link-text">
+          <div class="link-label">寿司チョーカー</div>
+          <div class="link-sub">お寿司を身につける、ユーモラスな一品</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
+
+      <!-- プレステラ用パーツ『ヤドリギ』 -->
+      <a class="link-btn" href="../yadorigi/index.html">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h8v8h-8v-8zm2 2v4h4v-4h-4z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">プレステラ用パーツ『ヤドリギ』</div>
+          <div class="link-sub">鉢にちょこんと宿るパーツ</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- マグ根っこ -->
+      <a class="link-btn" href="../mag-nekko/index.html">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8 2 5 5.5 5 9c0 4.5 5 10.5 6.3 12.9.3.5 1 .5 1.3 0C13.9 19.5 19 13.5 19 9c0-3.5-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">マグ根っこ</div>
+          <div class="link-sub">葉っぱのクリップでメモを挟む根っこ</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- セルフ回転ずし -->
+      <a class="link-btn" href="../self-sushi/index.html">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 5.58 2 10c0 2.13 1.06 4.04 2.72 5.41L4 22l3.5-2.2c1.36.54 2.88.84 4.5.84 5.52 0 10-3.58 10-8S17.52 2 12 2zm-3 9H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">セルフ回転ずし</div>
+          <div class="link-sub">振動だけで自走する寿司型ロボット</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
     </div>
 
-    <!-- Social -->
-    <div class="section">
-      <div class="section-label">Social</div>
+    <div class="spacer"></div>
 
-      <a class="item" href="https://www.instagram.com/8.bit.l__l/" target="_blank" rel="noopener">
-        <div class="item-icon">📷</div>
-        <div class="item-body">
-          <div class="item-title">Instagram</div>
-          <div class="item-desc">@8.bit.l__l</div>
+    <!-- Lab（デジタル作品） -->
+    <div class="section-label">Lab</div>
+    <div class="links">
+
+      <!-- 緑園水位シミュレーション -->
+      <a class="link-btn" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
         </div>
-        <div class="item-arrow">→</div>
+        <div class="link-text">
+          <div class="link-label">緑園エリア 浸水シミュレーション</div>
+          <div class="link-sub">3D city × flood sim</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
       </a>
+
+      <!-- VR体験 -->
+      <a class="link-btn" href="https://hachi-bit.github.io/vr/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h3.5l2.5 2.5L12.5 18H20c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zM8.5 13c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm7 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">VR</div>
+          <div class="link-sub">WebVR experience</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- 手描きアプリ -->
+      <a class="link-btn" href="https://hand-drawing-app.vercel.app/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">手描きアプリ</div>
+          <div class="link-sub">hand tracking drawing</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- まつりゲームズ（夏祭りQR公開のため一時非表示。復活時はこのコメントを外す）
+      <a class="link-btn" href="https://hachi-bit.github.io/matsuri-games/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">まつりゲームズ</div>
+          <div class="link-sub">web AR mini games</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+      -->
+
     </div>
 
-    <!-- Contact -->
-    <div class="section">
-      <div class="section-label">Contact</div>
-      <div class="contact-block">
-        <div class="contact-name">鉢-bit</div>
-        <a class="contact-email" href="mailto:hachi.bit.studio@gmail.com">hachi.bit.studio@gmail.com</a>
-        <br>
-        <a class="contact-btn" href="../hachi-bit.vcf">📇 連絡先に保存</a>
+    <div class="spacer"></div>
+
+    <!-- Social（X・noteは非公開のため個別に非表示。Instagramのみ表示） -->
+    <div class="section-label">Social</div>
+    <div class="links">
+
+      <!-- X (Twitter) は非公開のため非表示。復活する場合は以下のコメントを外す
+      <a class="link-btn" href="https://x.com/plant_8bit" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">X (Twitter)</div>
+          <div class="link-sub">@plant_8bit</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+      -->
+
+      <a class="link-btn" href="https://www.instagram.com/8.bit.l__l/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">Instagram</div>
+          <div class="link-sub">@8.bit.l__l</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+
+      <!-- note は非公開のため非表示。復活する場合は以下のコメントを外す
+      <a class="link-btn" href="https://note.com/hachi_bit" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h16V6H4zm2 3h12v2H6V9zm0 4h8v2H6v-2z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-label">note</div>
+          <div class="link-sub">hachi_bit</div>
+        </div>
+        <div class="link-arrow" aria-hidden="true">→</div>
+      </a>
+      -->
+
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- Contact（名刺代わり） -->
+    <div class="section-label">Contact</div>
+    <div class="meishi-card">
+      <div class="meishi-name">鉢-bit</div>
+      <a class="meishi-email" href="mailto:hachi.bit.studio@gmail.com">hachi.bit.studio@gmail.com</a>
+
+      <!-- vCard保存 -->
+      <a class="meishi-save-btn" href="../hachi-bit.vcf">📇 連絡先に保存</a>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- Fun -->
+    <div class="section-label label-fun">Fun</div>
+    <div class="fun-area">
+
+      <!-- 訪問スタンプ -->
+      <div class="fun-section">
+        <div class="fun-header">
+          <div class="fun-title">Visits</div>
+          <div class="fun-stage" id="growthLabel">🌱 seed</div>
+        </div>
+        <div class="stamp-track" id="stampTrack"></div>
       </div>
+
+      <!-- コレクション -->
+      <div class="fun-section">
+        <div class="fun-header">
+          <div class="fun-title">Collection</div>
+          <div class="collection-count" id="collCount">0 / 24</div>
+        </div>
+        <div class="collection-grid" id="collGrid"></div>
+        <button class="gacha-btn" id="gachaBtn">🎲 今日のガチャを引く</button>
+        <div class="gacha-result" id="gachaResult"></div>
+      </div>
+
     </div>
 
-    <div class="footer">鉢-bit / hachi-bit — TEST BUILD</div>
+    <!-- フッター -->
+    <div class="footer">
+      <div class="footer-badge">
+        <span>◆</span> 鉢-bit / hachi-bit <span>◆</span>
+      </div>
+      <div class="footer-copy">&copy; 2025 hachi-bit</div>
+    </div>
 
   </div>
 
   <script>
-    function toggleExpand(head) {
-      var expand = head.parentElement;
-      var wasOpen = expand.classList.contains('open');
-      document.querySelectorAll('.expand.open').forEach(function(el) {
-        el.classList.remove('open');
-      });
-      if (!wasOpen) expand.classList.add('open');
+  (function() {
+    'use strict';
+
+    // ===== 定数 =====
+    var GACHA_POOL = [
+      '🌵','🪴','🌻','🍄','🐝','🌿','🌸','🌺',
+      '🍀','🌾','🌹','🪻','🌷','🎋','🌲','🎍',
+      '🪵','🌳','🍃','🍂','🐛','🦋','🐞','🌼'
+    ];
+
+    var STAGES = [
+      { min: 1,  emoji: '🌱', label: 'seed' },
+      { min: 3,  emoji: '🌿', label: 'sprout' },
+      { min: 7,  emoji: '🍀', label: 'clover' },
+      { min: 14, emoji: '🌸', label: 'bloom' },
+      { min: 30, emoji: '🌻', label: 'full bloom' }
+    ];
+
+    var MAX_STAMPS = 30;
+
+    // ===== ユーティリティ =====
+    function today() {
+      return new Date().toISOString().slice(0, 10);
     }
+
+    function loadJSON(key, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return v ? JSON.parse(v) : fallback;
+      } catch(e) { return fallback; }
+    }
+
+    function saveJSON(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+    }
+
+    // ===== 訪問トラッキング =====
+    var visits = loadJSON('hb_visits', 0);
+    var lastDay = loadJSON('hb_lastDay', '');
+    var isNewDay = lastDay !== today();
+
+    if (isNewDay) {
+      visits++;
+      saveJSON('hb_visits', visits);
+      saveJSON('hb_lastDay', today());
+    }
+
+    // ===== 成長ステージ =====
+    function getStage(count) {
+      var stage = STAGES[0];
+      for (var i = 0; i < STAGES.length; i++) {
+        if (count >= STAGES[i].min) stage = STAGES[i];
+      }
+      return stage;
+    }
+
+    var stage = getStage(visits);
+    document.getElementById('growthBadge').textContent = stage.emoji;
+    document.getElementById('growthLabel').textContent = stage.emoji + ' ' + stage.label;
+
+    // ===== スタンプ描画 =====
+    var track = document.getElementById('stampTrack');
+    var dots = Math.min(visits, MAX_STAMPS);
+    for (var i = 0; i < MAX_STAMPS; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'stamp-dot';
+      if (i < dots) {
+        dot.classList.add('filled');
+        if (i === dots - 1 && isNewDay) {
+          dot.classList.add('today');
+        }
+      }
+      track.appendChild(dot);
+    }
+
+    // ===== ガチャ =====
+    var collection = loadJSON('hb_collection', []);
+    var gachaDay = loadJSON('hb_gachaDay', '');
+    var alreadyDrawn = gachaDay === today();
+
+    function renderCollection() {
+      var grid = document.getElementById('collGrid');
+      grid.innerHTML = '';
+      // 全プールを表示、持ってるやつは絵文字、ないやつは？
+      GACHA_POOL.forEach(function(emoji) {
+        var slot = document.createElement('div');
+        slot.className = 'collection-slot';
+        var owned = collection.indexOf(emoji) !== -1;
+        if (owned) {
+          slot.textContent = emoji;
+        } else {
+          slot.classList.add('empty');
+          slot.textContent = '？';
+        }
+        grid.appendChild(slot);
+      });
+      document.getElementById('collCount').textContent = collection.length + ' / ' + GACHA_POOL.length;
+    }
+
+    function drawGacha() {
+      if (alreadyDrawn) return;
+
+      // 未所持を優先、全部持ってたらランダム
+      var pool = GACHA_POOL.filter(function(e) {
+        return collection.indexOf(e) === -1;
+      });
+      if (pool.length === 0) pool = GACHA_POOL;
+
+      var pick = pool[Math.floor(Math.random() * pool.length)];
+      var isNew = collection.indexOf(pick) === -1;
+
+      if (isNew) {
+        collection.push(pick);
+        saveJSON('hb_collection', collection);
+      }
+
+      alreadyDrawn = true;
+      saveJSON('hb_gachaDay', today());
+
+      // 結果表示
+      var result = document.getElementById('gachaResult');
+      result.innerHTML = '<span class="new-emoji">' + pick + '</span><br>' +
+        (isNew ? 'New！コレクションに追加！' : 'もう持ってるやつやった…');
+
+      // ボタン無効化
+      var btn = document.getElementById('gachaBtn');
+      btn.disabled = true;
+      btn.textContent = '✓ また明日！';
+
+      // コレクション再描画（新しいやつにアニメーション）
+      renderCollection();
+      if (isNew) {
+        var idx = GACHA_POOL.indexOf(pick);
+        var slots = document.getElementById('collGrid').children;
+        if (slots[idx]) slots[idx].classList.add('new');
+      }
+    }
+
+    renderCollection();
+
+    var btn = document.getElementById('gachaBtn');
+    if (alreadyDrawn) {
+      btn.disabled = true;
+      btn.textContent = '✓ また明日！';
+    }
+    btn.addEventListener('click', drawGacha);
+
+  })();
   </script>
 
 </body>
