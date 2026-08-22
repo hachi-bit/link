@@ -503,13 +503,6 @@
       font-size: 18px;
       color: var(--yellow);
       letter-spacing: 0.04em;
-      margin-bottom: 4px;
-    }
-
-    .meishi-role {
-      font-size: 11px;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.04em;
       margin-bottom: 14px;
     }
 
@@ -595,16 +588,21 @@
 
     .icon-area        { animation-delay: 0.05s; }
     .name             { animation-delay: 0.12s; }
-    .name-jp          { animation-delay: 0.18s; }
+    .name-jp          { animation-delay: 0.16s; }
+    .role             { animation-delay: 0.20s; }
     .tagline          { animation-delay: 0.24s; }
     .sep              { animation-delay: 0.30s; }
+    .spacer           { animation-delay: 0.30s; }
     .section-label:nth-of-type(1) { animation-delay: 0.34s; }
     .links:nth-of-type(1)         { animation-delay: 0.38s; }
-    .spacer           { animation-delay: 0.42s; }
-    .section-label:nth-of-type(2) { animation-delay: 0.46s; }
-    .links:nth-of-type(2)         { animation-delay: 0.50s; }
-    .fun-area          { animation-delay: 0.56s; }
-    .footer           { animation-delay: 0.64s; }
+    .section-label:nth-of-type(2) { animation-delay: 0.42s; }
+    .links:nth-of-type(2)         { animation-delay: 0.46s; }
+    .section-label:nth-of-type(3) { animation-delay: 0.50s; }
+    .links:nth-of-type(3)         { animation-delay: 0.54s; }
+    .section-label:nth-of-type(4) { animation-delay: 0.58s; }
+    .meishi-card       { animation-delay: 0.62s; }
+    .fun-area          { animation-delay: 0.68s; }
+    .footer           { animation-delay: 0.76s; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -1111,11 +1109,10 @@
     <div class="section-label">Contact</div>
     <div class="meishi-card">
       <div class="meishi-name">鉢-bit</div>
-      <div class="meishi-role">プランターメイカー / デジタルクリエイター</div>
       <a class="meishi-email" href="mailto:jazz.wolf.pawn.0127@gmail.com">jazz.wolf.pawn.0127@gmail.com</a>
 
       <!-- vCard保存 -->
-      <a class="meishi-save-btn" href="hachi-bit.vcf" type="text/vcard">📇 連絡先に保存</a>
+      <a class="meishi-save-btn" href="hachi-bit.vcf">📇 連絡先に保存</a>
     </div>
 
     <div class="spacer"></div>
