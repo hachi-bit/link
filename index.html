@@ -482,6 +482,54 @@
       width: 100%;
     }
 
+    /* ===== 名刺カード ===== */
+    .meishi-card {
+      width: 100%;
+      padding: 22px 20px;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .meishi-name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--yellow);
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .meishi-role {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+      margin-bottom: 14px;
+    }
+
+    .meishi-email {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Space Mono', monospace;
+      text-decoration: none;
+      margin-bottom: 16px;
+      transition: color 0.2s;
+    }
+
+    .meishi-email:hover {
+      color: var(--yellow);
+    }
+
+    .meishi-card .link-btn {
+      width: 100%;
+    }
+
     /* ===== フッター ===== */
     .footer {
       margin-top: 48px;
@@ -1037,10 +1085,13 @@
 
     <!-- Contact（名刺代わり） -->
     <div class="section-label">Contact</div>
-    <div class="links">
+    <div class="meishi-card">
+      <div class="meishi-name">鉢-bit</div>
+      <div class="meishi-role">プランターメイカー / デジタルクリエイター</div>
+      <a class="meishi-email" href="mailto:jazz.wolf.pawn.0127@gmail.com">jazz.wolf.pawn.0127@gmail.com</a>
 
-      <!-- vCard保存（data URI埋め込み。ファイル配信を経由しないためiOS Safariで確実に動く） -->
-      <a class="link-btn" href="data:text/vcard;charset=utf-8;base64,QkVHSU46VkNBUkQNClZFUlNJT046My4wDQpOOjvpiaItYml0Ozs7DQpGTjrpiaItYml0DQpUSVRMRTrjg5fjg6njg7Pjgr/jg7zjg6HjgqTjgqvjg7wgLyDjg4fjgrjjgr/jg6vjgq/jg6rjgqjjgqTjgr/jg7wNCkVNQUlMO1RZUEU9SU5URVJORVQ6amF6ei53b2xmLnBhd24uMDEyN0BnbWFpbC5jb20NClVSTDpodHRwczovL2hhY2hpLWJpdC5naXRodWIuaW8vDQpOT1RFOuOCu+ODoeODs+ODiOODu+efs+iGj+ODuzNE44OX44Oq44Oz44K/44Gn6Ymi44KS44Gk44GP44KL77yPV2Vi44O7VlLjgafpgYrjgbPjgpLjgaTjgY/jgosNCkVORDpWQ0FSRA0K">
+      <!-- vCard保存 -->
+      <a class="link-btn" href="hachi-bit.vcf" type="text/vcard">
         <div class="link-icon">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM9 10c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4 8H5v-.5c0-1.33 2.67-2 4-2s4 .67 4 2v.5zm6-2h-4v-1.5h4V16zm0-3h-4v-1.5h4V13z"/>
@@ -1052,21 +1103,6 @@
         </div>
         <div class="link-arrow" aria-hidden="true">→</div>
       </a>
-
-      <!-- メール -->
-      <a class="link-btn" href="mailto:jazz.wolf.pawn.0127@gmail.com">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <div class="link-label">Email</div>
-          <div class="link-sub">jazz.wolf.pawn.0127@gmail.com</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
-
     </div>
 
     <div class="spacer"></div>
