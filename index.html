@@ -526,8 +526,32 @@
       color: var(--yellow);
     }
 
-    .meishi-card .link-btn {
+    .meishi-save-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(245,196,0,0.35);
+      border-radius: 12px;
+      background: rgba(245,196,0,0.10);
+      color: var(--yellow);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .meishi-save-btn:hover {
+      background: rgba(245,196,0,0.18);
+      transform: translateY(-1px);
+    }
+
+    .meishi-save-btn:active {
+      transform: translateY(0) scale(0.98);
     }
 
     /* ===== フッター ===== */
@@ -1091,18 +1115,7 @@
       <a class="meishi-email" href="mailto:jazz.wolf.pawn.0127@gmail.com">jazz.wolf.pawn.0127@gmail.com</a>
 
       <!-- vCard保存 -->
-      <a class="link-btn" href="hachi-bit.vcf" type="text/vcard">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM9 10c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4 8H5v-.5c0-1.33 2.67-2 4-2s4 .67 4 2v.5zm6-2h-4v-1.5h4V16zm0-3h-4v-1.5h4V13z"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <div class="link-label">連絡先に保存</div>
-          <div class="link-sub">Add to Contacts</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      <a class="meishi-save-btn" href="hachi-bit.vcf" type="text/vcard">📇 連絡先に保存</a>
     </div>
 
     <div class="spacer"></div>
