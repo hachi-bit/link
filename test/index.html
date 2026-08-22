@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鉢-bit | hachi-bit (test)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="../icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #14161a;
+      --sub: #5a6270;
+      --line: #e7e9ee;
+      --bg: #ffffff;
+      --bg-soft: #f6f7f9;
+      --accent: #2f6bff;
+      --accent-soft: rgba(47,107,255,0.08);
+      --accent-border: rgba(47,107,255,0.25);
+      --yellow: #F5C400;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      line-height: 1.6;
+    }
+
+    .test-badge {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 6px;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .hero img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .hero-name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-role {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    h1.headline {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 28px 0 12px;
+    }
+
+    h1.headline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .sub {
+      font-size: 15px;
+      color: var(--sub);
+      margin-bottom: 40px;
+    }
+
+    /* ===== セクション ===== */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sub);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ===== カード（アコーディオン風の明快なリスト） ===== */
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--ink);
+      background: #fff;
+      margin-bottom: 10px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .item:hover {
+      border-color: var(--accent-border);
+      background: var(--accent-soft);
+    }
+
+    .item-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: var(--bg-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 17px;
+    }
+
+    .item:hover .item-icon {
+      background: var(--accent-soft);
+    }
+
+    .item-body { flex: 1; min-width: 0; }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .item-desc {
+      font-size: 12.5px;
+      color: var(--sub);
+    }
+
+    .item-arrow {
+      color: var(--sub);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .item:hover .item-arrow {
+      color: var(--accent);
+    }
+
+    /* ===== Contact（answer-engineのヒーロー的な強調ブロック） ===== */
+    .contact-block {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px 24px;
+      background: var(--bg-soft);
+      text-align: center;
+    }
+
+    .contact-name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--sub);
+      font-family: 'Space Mono', monospace;
+      text-decoration: none;
+      margin-bottom: 18px;
+    }
+
+    .contact-email:hover { color: var(--accent); }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .contact-btn:hover { opacity: 0.85; }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--sub);
+      font-family: 'Space Mono', monospace;
+      margin-top: 56px;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="test-badge">TEST BUILD — eli5.cc風デザイン試作（本番には影響しません）</div>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+      <img src="../icon.png" alt="鉢-bit">
+      <div>
+        <div class="hero-name">鉢-bit / hachi-bit</div>
+        <div class="hero-role">プランターメイカー / デジタルクリエイター</div>
+      </div>
+    </div>
+
+    <h1 class="headline">つくるを<em>遊ぶ</em>、遊びをつくる。</h1>
+    <p class="sub">セメント・石膏・3Dプリンタで鉢をつくり、Web・VRで遊びをつくっています。</p>
+
+    <!-- Product -->
+    <div class="section">
+      <div class="section-label">Product</div>
+
+      <a class="item" href="../cement-mori/index.html">
+        <div class="item-icon">🪴</div>
+        <div class="item-body">
+          <div class="item-title">セメント・モリ</div>
+          <div class="item-desc">育てるほどに表情が変わる鉢</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="../cactus-stand/index.html">
+        <div class="item-icon">🌵</div>
+        <div class="item-body">
+          <div class="item-title">サボテン型アクセサリースタンド</div>
+          <div class="item-desc">ピアスやリングをちょこんと引っ掛ける</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="../sushi-choker/index.html">
+        <div class="item-icon">🍣</div>
+        <div class="item-body">
+          <div class="item-title">寿司チョーカー</div>
+          <div class="item-desc">お寿司を身につける、ユーモラスな一品</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="../yadorigi/index.html">
+        <div class="item-icon">🌿</div>
+        <div class="item-body">
+          <div class="item-title">プレステラ用パーツ『ヤドリギ』</div>
+          <div class="item-desc">鉢にちょこんと宿るパーツ</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="../mag-nekko/index.html">
+        <div class="item-icon">📎</div>
+        <div class="item-body">
+          <div class="item-title">マグ根っこ</div>
+          <div class="item-desc">葉っぱのクリップでメモを挟む根っこ</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="../self-sushi/index.html">
+        <div class="item-icon">🍱</div>
+        <div class="item-body">
+          <div class="item-title">セルフ回転ずし</div>
+          <div class="item-desc">振動だけで自走する寿司型ロボット</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- Lab -->
+    <div class="section">
+      <div class="section-label">Lab</div>
+
+      <a class="item" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
+        <div class="item-icon">🌊</div>
+        <div class="item-body">
+          <div class="item-title">緑園エリア 浸水シミュレーション</div>
+          <div class="item-desc">3D city × flood sim</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="https://hachi-bit.github.io/vr/" target="_blank" rel="noopener">
+        <div class="item-icon">🥽</div>
+        <div class="item-body">
+          <div class="item-title">VR</div>
+          <div class="item-desc">WebVR experience</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+
+      <a class="item" href="https://hand-drawing-app.vercel.app/" target="_blank" rel="noopener">
+        <div class="item-icon">✏️</div>
+        <div class="item-body">
+          <div class="item-title">手描きアプリ</div>
+          <div class="item-desc">hand tracking drawing</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- Social -->
+    <div class="section">
+      <div class="section-label">Social</div>
+
+      <a class="item" href="https://www.instagram.com/8.bit.l__l/" target="_blank" rel="noopener">
+        <div class="item-icon">📷</div>
+        <div class="item-body">
+          <div class="item-title">Instagram</div>
+          <div class="item-desc">@8.bit.l__l</div>
+        </div>
+        <div class="item-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- Contact -->
+    <div class="section">
+      <div class="section-label">Contact</div>
+      <div class="contact-block">
+        <div class="contact-name">鉢-bit</div>
+        <a class="contact-email" href="mailto:hachi.bit.studio@gmail.com">hachi.bit.studio@gmail.com</a>
+        <br>
+        <a class="contact-btn" href="../hachi-bit.vcf">📇 連絡先に保存</a>
+      </div>
+    </div>
+
+    <div class="footer">鉢-bit / hachi-bit — TEST BUILD</div>
+
+  </div>
+
+</body>
+</html>
