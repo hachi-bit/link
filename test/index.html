@@ -178,10 +178,69 @@
       color: var(--sub);
       font-size: 14px;
       flex-shrink: 0;
+      transition: transform 0.2s;
     }
 
     .item:hover .item-arrow {
       color: var(--accent);
+    }
+
+    /* ===== 展開式アイテム（Product：ELI5→もっと詳しく） ===== */
+    .expand {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .expand-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      cursor: pointer;
+      background: #fff;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .expand-head:hover { background: var(--accent-soft); }
+
+    .expand.open .expand-head { background: var(--accent-soft); }
+
+    .expand.open .item-arrow { transform: rotate(90deg); color: var(--accent); }
+
+    .expand-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      background: var(--bg-soft);
+    }
+
+    .expand.open .expand-body {
+      max-height: 260px;
+    }
+
+    .expand-body-inner {
+      padding: 4px 16px 18px 66px;
+    }
+
+    .expand-detail {
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.8;
+      margin-bottom: 12px;
+      white-space: pre-line;
+    }
+
+    .expand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
     }
 
     /* ===== Contact（answer-engineのヒーロー的な強調ブロック） ===== */
@@ -252,66 +311,117 @@
       </div>
     </div>
 
-    <h1 class="headline">つくるを<em>遊ぶ</em>、遊びをつくる。</h1>
-    <p class="sub">セメント・石膏・3Dプリンタで鉢をつくり、Web・VRで遊びをつくっています。</p>
+    <h1 class="headline">鉢-bitって、<em>何してる人？</em></h1>
+    <p class="sub">セメント・石膏・3Dプリンタで、ちょっと変な鉢や小物を作っている人。あと空き時間でWebやVRのおもちゃも作っている。作品はどれも「まず一言→気になったらタップで詳しく」で見られる。</p>
 
     <!-- Product -->
     <div class="section">
       <div class="section-label">Product</div>
 
-      <a class="item" href="../cement-mori/index.html">
-        <div class="item-icon">🪴</div>
-        <div class="item-body">
-          <div class="item-title">セメント・モリ</div>
-          <div class="item-desc">育てるほどに表情が変わる鉢</div>
+      <div class="expand">
+        <div class="expand-head" onclick="toggleExpand(this)">
+          <div class="item-icon">🪴</div>
+          <div class="item-body">
+            <div class="item-title">セメント・モリ</div>
+            <div class="item-desc">育てるほどに表情が変わる鉢</div>
+          </div>
+          <div class="item-arrow">›</div>
         </div>
-        <div class="item-arrow">→</div>
-      </a>
+        <div class="expand-body">
+          <div class="expand-body-inner">
+            <div class="expand-detail">素材は石膏。使うほど少しずつ欠けて表情が変わっていく、"育てる鉢"。
+名前は cement（セメント）× memento mori（死を想え）の言葉遊びから。
+完成した瞬間がゴールではなく、朽ちていく過程そのものを楽しむ一点物。</div>
+            <a class="expand-link" href="../cement-mori/index.html">くわしいページを見る →</a>
+          </div>
+        </div>
+      </div>
 
-      <a class="item" href="../cactus-stand/index.html">
-        <div class="item-icon">🌵</div>
-        <div class="item-body">
-          <div class="item-title">サボテン型アクセサリースタンド</div>
-          <div class="item-desc">ピアスやリングをちょこんと引っ掛ける</div>
+      <div class="expand">
+        <div class="expand-head" onclick="toggleExpand(this)">
+          <div class="item-icon">🌵</div>
+          <div class="item-body">
+            <div class="item-title">サボテン型アクセサリースタンド</div>
+            <div class="item-desc">ピアスやリングをちょこんと引っ掛ける</div>
+          </div>
+          <div class="item-arrow">›</div>
         </div>
-        <div class="item-arrow">→</div>
-      </a>
+        <div class="expand-body">
+          <div class="expand-body-inner">
+            <div class="expand-detail">サボテンの形をしたアクセサリースタンド。トゲの部分にピアスやリングをちょこんと引っ掛けられる。3Dプリンタ製。</div>
+            <a class="expand-link" href="../cactus-stand/index.html">くわしいページを見る →</a>
+          </div>
+        </div>
+      </div>
 
-      <a class="item" href="../sushi-choker/index.html">
-        <div class="item-icon">🍣</div>
-        <div class="item-body">
-          <div class="item-title">寿司チョーカー</div>
-          <div class="item-desc">お寿司を身につける、ユーモラスな一品</div>
+      <div class="expand">
+        <div class="expand-head" onclick="toggleExpand(this)">
+          <div class="item-icon">🍣</div>
+          <div class="item-body">
+            <div class="item-title">寿司チョーカー</div>
+            <div class="item-desc">お寿司を身につける、ユーモラスな一品</div>
+          </div>
+          <div class="item-arrow">›</div>
         </div>
-        <div class="item-arrow">→</div>
-      </a>
+        <div class="expand-body">
+          <div class="expand-body-inner">
+            <div class="expand-detail">お寿司モチーフのチョーカーセット。ネタが首元にちょこんと乗る、ちょっとユーモラスで目を引くアクセサリー。3Dプリンタ製。</div>
+            <a class="expand-link" href="../sushi-choker/index.html">くわしいページを見る →</a>
+          </div>
+        </div>
+      </div>
 
-      <a class="item" href="../yadorigi/index.html">
-        <div class="item-icon">🌿</div>
-        <div class="item-body">
-          <div class="item-title">プレステラ用パーツ『ヤドリギ』</div>
-          <div class="item-desc">鉢にちょこんと宿るパーツ</div>
+      <div class="expand">
+        <div class="expand-head" onclick="toggleExpand(this)">
+          <div class="item-icon">🌿</div>
+          <div class="item-body">
+            <div class="item-title">プレステラ用パーツ『ヤドリギ』</div>
+            <div class="item-desc">鉢にちょこんと宿るパーツ</div>
+          </div>
+          <div class="item-arrow">›</div>
         </div>
-        <div class="item-arrow">→</div>
-      </a>
+        <div class="expand-body">
+          <div class="expand-body-inner">
+            <div class="expand-detail">園芸でおなじみのプレステラ鉢に取り付けられるオリジナルパーツ。名前の通り、鉢に宿るヤドリギのようなデザイン。3Dプリンタ製。</div>
+            <a class="expand-link" href="../yadorigi/index.html">くわしいページを見る →</a>
+          </div>
+        </div>
+      </div>
 
-      <a class="item" href="../mag-nekko/index.html">
-        <div class="item-icon">📎</div>
-        <div class="item-body">
-          <div class="item-title">マグ根っこ</div>
-          <div class="item-desc">葉っぱのクリップでメモを挟む根っこ</div>
+      <div class="expand">
+        <div class="expand-head" onclick="toggleExpand(this)">
+          <div class="item-icon">📎</div>
+          <div class="item-body">
+            <div class="item-title">マグ根っこ</div>
+            <div class="item-desc">葉っぱのクリップでメモを挟む根っこ</div>
+          </div>
+          <div class="item-arrow">›</div>
         </div>
-        <div class="item-arrow">→</div>
-      </a>
+        <div class="expand-body">
+          <div class="expand-body-inner">
+            <div class="expand-detail">根っこのような丸い土台に、葉っぱ型のクリップが生えたメモホルダー。土台のスリットにメモやカードも挟める。3Dプリンタ製。</div>
+            <a class="expand-link" href="../mag-nekko/index.html">くわしいページを見る →</a>
+          </div>
+        </div>
+      </div>
 
-      <a class="item" href="../self-sushi/index.html">
-        <div class="item-icon">🍱</div>
-        <div class="item-body">
-          <div class="item-title">セルフ回転ずし</div>
-          <div class="item-desc">振動だけで自走する寿司型ロボット</div>
+      <div class="expand">
+        <div class="expand-head" onclick="toggleExpand(this)">
+          <div class="item-icon">🍱</div>
+          <div class="item-body">
+            <div class="item-title">セルフ回転ずし</div>
+            <div class="item-desc">振動だけで自走する寿司型ロボット</div>
+          </div>
+          <div class="item-arrow">›</div>
         </div>
-        <div class="item-arrow">→</div>
-      </a>
+        <div class="expand-body">
+          <div class="expand-body-inner">
+            <div class="expand-detail">3Dプリンタで作った寿司型の振動ロボット。モーターと電池を内蔵していて、振動の力で円を描くように自分で前進する。
+「決められたレーンを回るのには、飽きたのさ。」</div>
+            <a class="expand-link" href="../self-sushi/index.html">くわしいページを見る →</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Lab -->
@@ -374,6 +484,17 @@
     <div class="footer">鉢-bit / hachi-bit — TEST BUILD</div>
 
   </div>
+
+  <script>
+    function toggleExpand(head) {
+      var expand = head.parentElement;
+      var wasOpen = expand.classList.contains('open');
+      document.querySelectorAll('.expand.open').forEach(function(el) {
+        el.classList.remove('open');
+      });
+      if (!wasOpen) expand.classList.add('open');
+    }
+  </script>
 
 </body>
 </html>
