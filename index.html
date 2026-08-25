@@ -466,6 +466,59 @@
       color: var(--yellow);
     }
 
+    /* ===== アコーディオン ===== */
+    .accordion-toggle {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      font: inherit;
+      color: inherit;
+      text-align: left;
+    }
+
+    .accordion-chevron {
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .accordion-item.open .accordion-chevron {
+      transform: rotate(90deg);
+      color: var(--yellow);
+    }
+
+    .accordion-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+    }
+
+    .accordion-item.open .accordion-panel {
+      max-height: 320px;
+      opacity: 1;
+    }
+
+    .accordion-desc {
+      padding: 14px 20px 4px;
+      font-size: 12.5px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.55);
+      white-space: pre-line;
+    }
+
+    .accordion-link {
+      display: inline-block;
+      margin: 4px 20px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--yellow);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .accordion-link:hover {
+      text-decoration: underline;
+    }
+
     /* ===== セクション間スペーサー ===== */
     .spacer {
       height: 24px;
@@ -819,18 +872,25 @@
     <div class="links">
 
       <!-- 緑園水位シミュレーション -->
-      <a class="link-btn" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-          </svg>
+      <div class="accordion-item">
+        <button type="button" class="link-btn accordion-toggle" aria-expanded="false" aria-controls="panel-ryokuen">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+          </div>
+          <div class="link-text">
+            <div class="link-label">緑園エリア 浸水シミュレーション</div>
+            <div class="link-sub">3D city × flood sim</div>
+          </div>
+          <div class="link-arrow accordion-chevron" aria-hidden="true">›</div>
+        </button>
+        <div class="accordion-panel" id="panel-ryokuen">
+          <p class="accordion-desc">緑園エリアの地形をもとにした3D都市モデル上で、水位を変えながら浸水の広がりを可視化するシミュレーションです。
+実際に水位を動かして、街がどう沈んでいくかを体験できます。</p>
+          <a class="accordion-link" href="https://hachi-bit.github.io/ryokuen-suii/" target="_blank" rel="noopener">シミュレーションを開く →</a>
         </div>
-        <div class="link-text">
-          <div class="link-label">緑園エリア 浸水シミュレーション</div>
-          <div class="link-sub">3D city × flood sim</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      </div>
 
       <!-- まつりゲームズ（夏祭りQR公開のため一時非表示。復活時はこのコメントを外す）
       <a class="link-btn" href="https://hachi-bit.github.io/matsuri-games/" target="_blank" rel="noopener">
@@ -856,74 +916,111 @@
     <div class="links">
 
       <!-- セメント・モリ -->
-      <a class="link-btn" href="cement-mori/index.html">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 20h12V10L12 4 6 10v10zm2-2v-7.2l4-3.6 4 3.6V18H8zm3-6h2v2h-2v-2zm-2 4h6v2H9v-2z"/>
-          </svg>
+      <div class="accordion-item">
+        <button type="button" class="link-btn accordion-toggle" aria-expanded="false" aria-controls="panel-cement-mori">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 20h12V10L12 4 6 10v10zm2-2v-7.2l4-3.6 4 3.6V18H8zm3-6h2v2h-2v-2zm-2 4h6v2H9v-2z"/>
+            </svg>
+          </div>
+          <div class="link-text">
+            <div class="link-label">セメント・モリ</div>
+            <div class="link-sub">cement pot</div>
+          </div>
+          <div class="link-arrow accordion-chevron" aria-hidden="true">›</div>
+        </button>
+        <div class="accordion-panel" id="panel-cement-mori">
+          <p class="accordion-desc">素材は石膏。セメントのような無機質な色合いに仕上げています。
+名前は「cement（セメント）mori（植物）」と「memento mori（死を想え）」を掛けたことば遊びから。
+石膏なので、時間をかけて少しずつ表情を変えていきます。
+完成した瞬間がゴールではなく、育てながら朽ちていく過程そのものを楽しむ一点物です。</p>
+          <a class="accordion-link" href="cement-mori/index.html">くわしいページを見る →</a>
         </div>
-        <div class="link-text">
-          <div class="link-label">セメント・モリ</div>
-          <div class="link-sub">cement pot</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      </div>
 
       <!-- サボテン型アクセサリースタンド -->
-      <a class="link-btn" href="cactus-stand/index.html">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2c-1.1 0-2 .9-2 2v5H8c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h2v7h4v-7h2c1.1 0 2-.9 2-2v-2c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2z"/>
-          </svg>
+      <div class="accordion-item">
+        <button type="button" class="link-btn accordion-toggle" aria-expanded="false" aria-controls="panel-cactus-stand">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2c-1.1 0-2 .9-2 2v5H8c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h2v7h4v-7h2c1.1 0 2-.9 2-2v-2c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2z"/>
+            </svg>
+          </div>
+          <div class="link-text">
+            <div class="link-label">サボテン型アクセサリースタンド</div>
+            <div class="link-sub">cactus accessory stand</div>
+          </div>
+          <div class="link-arrow accordion-chevron" aria-hidden="true">›</div>
+        </button>
+        <div class="accordion-panel" id="panel-cactus-stand">
+          <p class="accordion-desc">サボテンをモチーフにしたアクセサリースタンドです。
+ピアスやリングをちょこんと引っ掛けられます。</p>
+          <a class="accordion-link" href="cactus-stand/index.html">くわしいページを見る →</a>
         </div>
-        <div class="link-text">
-          <div class="link-label">サボテン型アクセサリースタンド</div>
-          <div class="link-sub">cactus accessory stand</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      </div>
 
       <!-- 寿司チョーカー -->
-      <a class="link-btn" href="sushi-choker/index.html">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 5.58 2 10c0 2.13 1.06 4.04 2.72 5.41L4 22l3.5-2.2c1.36.54 2.88.84 4.5.84 5.52 0 10-3.58 10-8S17.52 2 12 2zm-3 9H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-          </svg>
+      <div class="accordion-item">
+        <button type="button" class="link-btn accordion-toggle" aria-expanded="false" aria-controls="panel-sushi-choker">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 5.58 2 10c0 2.13 1.06 4.04 2.72 5.41L4 22l3.5-2.2c1.36.54 2.88.84 4.5.84 5.52 0 10-3.58 10-8S17.52 2 12 2zm-3 9H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+            </svg>
+          </div>
+          <div class="link-text">
+            <div class="link-label">寿司チョーカー</div>
+            <div class="link-sub">sushi choker set</div>
+          </div>
+          <div class="link-arrow accordion-chevron" aria-hidden="true">›</div>
+        </button>
+        <div class="accordion-panel" id="panel-sushi-choker">
+          <p class="accordion-desc">お寿司モチーフのチョーカーセットです。
+ちょっとユーモラスで目を引くアクセサリーです。</p>
+          <a class="accordion-link" href="sushi-choker/index.html">くわしいページを見る →</a>
         </div>
-        <div class="link-text">
-          <div class="link-label">寿司チョーカー</div>
-          <div class="link-sub">sushi choker set</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      </div>
 
       <!-- プレステラ用パーツ『ヤドリギ』 -->
-      <a class="link-btn" href="yadorigi/index.html">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h8v8h-8v-8zm2 2v4h4v-4h-4z"/>
-          </svg>
+      <div class="accordion-item">
+        <button type="button" class="link-btn accordion-toggle" aria-expanded="false" aria-controls="panel-yadorigi">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h8v8h-8v-8zm2 2v4h4v-4h-4z"/>
+            </svg>
+          </div>
+          <div class="link-text">
+            <div class="link-label">プレステラ用パーツ『ヤドリギ』</div>
+            <div class="link-sub">prestera parts</div>
+          </div>
+          <div class="link-arrow accordion-chevron" aria-hidden="true">›</div>
+        </button>
+        <div class="accordion-panel" id="panel-yadorigi">
+          <p class="accordion-desc">プレステラ鉢に取り付けられるオリジナルパーツです。
+名前の通り、鉢にちょこんと宿るヤドリギのようなデザインです。</p>
+          <a class="accordion-link" href="yadorigi/index.html">くわしいページを見る →</a>
         </div>
-        <div class="link-text">
-          <div class="link-label">プレステラ用パーツ『ヤドリギ』</div>
-          <div class="link-sub">prestera parts</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      </div>
 
       <!-- マグ根っこ -->
-      <a class="link-btn" href="mag-nekko/index.html">
-        <div class="link-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C8 2 5 5.5 5 9c0 4.5 5 10.5 6.3 12.9.3.5 1 .5 1.3 0C13.9 19.5 19 13.5 19 9c0-3.5-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
-          </svg>
+      <div class="accordion-item">
+        <button type="button" class="link-btn accordion-toggle" aria-expanded="false" aria-controls="panel-mag-nekko">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C8 2 5 5.5 5 9c0 4.5 5 10.5 6.3 12.9.3.5 1 .5 1.3 0C13.9 19.5 19 13.5 19 9c0-3.5-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
+            </svg>
+          </div>
+          <div class="link-text">
+            <div class="link-label">マグ根っこ</div>
+            <div class="link-sub">memo holder</div>
+          </div>
+          <div class="link-arrow accordion-chevron" aria-hidden="true">›</div>
+        </button>
+        <div class="accordion-panel" id="panel-mag-nekko">
+          <p class="accordion-desc">根っこのような丸い土台に、葉っぱ型のクリップが生えたメモホルダーです。
+土台のスリットにメモやカードを挟んで使えます。</p>
+          <a class="accordion-link" href="mag-nekko/index.html">くわしいページを見る →</a>
         </div>
-        <div class="link-text">
-          <div class="link-label">マグ根っこ</div>
-          <div class="link-sub">memo holder</div>
-        </div>
-        <div class="link-arrow" aria-hidden="true">→</div>
-      </a>
+      </div>
 
     </div>
 
@@ -1016,6 +1113,15 @@
   <script>
   (function() {
     'use strict';
+
+    // ===== アコーディオン =====
+    document.querySelectorAll('.accordion-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = btn.closest('.accordion-item');
+        var isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    });
 
     // ===== 定数 =====
     var GACHA_POOL = [
