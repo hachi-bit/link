@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ハコイチ値札加工ツール | 鉢-bit</title>
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <main class="wrap">
@@ -21,12 +21,21 @@
     <section id="options" class="options" hidden>
       <h2>レイアウト設定</h2>
       <label>
-        <span>ホチキス用の余白（上部）</span>
+        <span>ホチキス上の余白</span>
         <span class="stepper">
-          <button type="button" class="step-btn" data-target="stapleMargin" data-step="-1" aria-label="1mm減らす">－</button>
-          <input type="number" id="stapleMargin" value="15" min="5" max="40" step="1">
+          <button type="button" class="step-btn" data-target="marginAbove" data-step="-1" aria-label="1mm減らす">－</button>
+          <input type="number" id="marginAbove" value="8" min="2" max="35" step="1">
           <span class="unit">mm</span>
-          <button type="button" class="step-btn" data-target="stapleMargin" data-step="1" aria-label="1mm増やす">＋</button>
+          <button type="button" class="step-btn" data-target="marginAbove" data-step="1" aria-label="1mm増やす">＋</button>
+        </span>
+      </label>
+      <label>
+        <span>ホチキス下の余白</span>
+        <span class="stepper">
+          <button type="button" class="step-btn" data-target="marginBelow" data-step="-1" aria-label="1mm減らす">－</button>
+          <input type="number" id="marginBelow" value="7" min="2" max="35" step="1">
+          <span class="unit">mm</span>
+          <button type="button" class="step-btn" data-target="marginBelow" data-step="1" aria-label="1mm増やす">＋</button>
         </span>
       </label>
       <label>
@@ -59,6 +68,6 @@
   </main>
 
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script type="module" src="app.js?v=2"></script>
+<script type="module" src="app.js?v=3"></script>
 </body>
 </html>

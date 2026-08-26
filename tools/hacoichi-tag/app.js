@@ -16,11 +16,19 @@ const processBtn = document.getElementById("processBtn");
 const previewArea = document.getElementById("previewArea");
 const previewCanvas = document.getElementById("previewCanvas");
 const downloadLink = document.getElementById("downloadLink");
-const stapleMarginInput = document.getElementById("stapleMargin");
+const marginAboveInput = document.getElementById("marginAbove");
+const marginBelowInput = document.getElementById("marginBelow");
 const gapMmInput = document.getElementById("gapMm");
 const schematicPreview = document.getElementById("schematicPreview");
 
 let currentFileBytes = null;
+
+// parseFloat(...) || fallback would wrongly replace a legitimate 0 with the
+// fallback (0 is falsy), so check for a finite number instead.
+function numOr(value, fallback) {
+  const n = parseFloat(value);
+  return Number.isFinite(n) ? n : fallback;
+}
 
 // ---- live schematic preview (illustrative sizing, not the loaded PDF's actual card size) ----
 const SCHEM_PX_PER_MM = 3.6;
@@ -33,29 +41,31 @@ function schemPx(mm) {
   return mm * SCHEM_PX_PER_MM;
 }
 
-function schemTagHtml(tagWmm, tagHmm, stapleMarginMm) {
+function schemTagHtml(tagWmm, tagHmm, marginAboveMm, foldMm) {
   return `
     <div class="schem-tag" style="width:${schemPx(tagWmm)}px;height:${schemPx(tagHmm)}px;">
-      <div class="schem-fold" style="top:${schemPx(stapleMarginMm)}px;"></div>
-      <div class="schem-cross" style="top:${schemPx(stapleMarginMm / 2)}px;">⊕</div>
-      <div class="schem-card" style="left:${schemPx(SCHEM_SIDE_MARGIN_MM)}px; top:${schemPx(stapleMarginMm)}px; width:${schemPx(SCHEM_CARD_W_MM)}px; height:${schemPx(SCHEM_CARD_H_MM)}px;"></div>
+      <div class="schem-fold" style="top:${schemPx(foldMm)}px;"></div>
+      <div class="schem-cross" style="top:${schemPx(marginAboveMm)}px;">⊕</div>
+      <div class="schem-card" style="left:${schemPx(SCHEM_SIDE_MARGIN_MM)}px; top:${schemPx(foldMm)}px; width:${schemPx(SCHEM_CARD_W_MM)}px; height:${schemPx(SCHEM_CARD_H_MM)}px;"></div>
     </div>
   `;
 }
 
 function renderSchematic() {
-  const stapleMarginMm = parseFloat(stapleMarginInput.value) || 0;
-  const gapMm = Math.max(0, parseFloat(gapMmInput.value) || 0);
+  const marginAboveMm = numOr(marginAboveInput.value, 0);
+  const marginBelowMm = numOr(marginBelowInput.value, 0);
+  const gapMm = Math.max(0, numOr(gapMmInput.value, 0));
+  const foldMm = marginAboveMm + marginBelowMm;
   const tagWmm = SCHEM_SIDE_MARGIN_MM * 2 + SCHEM_CARD_W_MM;
-  const tagHmm = stapleMarginMm + SCHEM_CARD_H_MM + SCHEM_BOTTOM_MARGIN_MM;
-  const tag = schemTagHtml(tagWmm, tagHmm, stapleMarginMm);
+  const tagHmm = foldMm + SCHEM_CARD_H_MM + SCHEM_BOTTOM_MARGIN_MM;
+  const tag = schemTagHtml(tagWmm, tagHmm, marginAboveMm, foldMm);
   schematicPreview.innerHTML = `${tag}<div class="schem-gap" style="width:${schemPx(gapMm)}px;"></div>${tag}`;
 }
 
 function adjustValue(input, step) {
   const min = parseFloat(input.min);
   const max = parseFloat(input.max);
-  let next = (parseFloat(input.value) || 0) + step;
+  let next = numOr(input.value, 0) + step;
   if (!Number.isNaN(min)) next = Math.max(min, next);
   if (!Number.isNaN(max)) next = Math.min(max, next);
   input.value = next;
@@ -69,7 +79,8 @@ document.querySelectorAll(".step-btn").forEach((btn) => {
   });
 });
 
-stapleMarginInput.addEventListener("input", renderSchematic);
+marginAboveInput.addEventListener("input", renderSchematic);
+marginBelowInput.addEventListener("input", renderSchematic);
 gapMmInput.addEventListener("input", renderSchematic);
 renderSchematic();
 
@@ -117,8 +128,9 @@ async function process() {
   processBtn.disabled = true;
   setStatus("PDFを解析しています…", null);
 
-  const stapleMarginMm = parseFloat(stapleMarginInput.value) || 15;
-  const gapMm = parseFloat(gapMmInput.value) || 5;
+  const marginAboveMm = numOr(marginAboveInput.value, 8);
+  const marginBelowMm = numOr(marginBelowInput.value, 7);
+  const gapMm = numOr(gapMmInput.value, 5);
 
   // 1. render page(s) to canvas & detect card boxes
   const loadingTask = pdfjsLib.getDocument({ data: currentFileBytes.slice() });
@@ -164,7 +176,9 @@ async function process() {
 
   const outDoc = await PDFDocument.create();
 
-  const staple_margin = stapleMarginMm * MM;
+  const staple_margin_above = marginAboveMm * MM;
+  const staple_margin_below = marginBelowMm * MM;
+  const staple_margin = staple_margin_above + staple_margin_below;
   const bottom_margin = 3 * MM;
   const side_margin = 3 * MM;
   const gap = gapMm * MM;
@@ -212,7 +226,7 @@ async function process() {
       });
 
       const cx = ox + tag_w / 2;
-      const cyFromTop = oyTop + staple_margin / 2 + 2;
+      const cyFromTop = oyTop + staple_margin_above;
       const cyBottom = page_h - cyFromTop;
       const r = 4.5;
       outPage.drawEllipse({ x: cx, y: cyBottom, xScale: r, yScale: r, borderColor: rgb(0.65, 0.65, 0.65), borderWidth: 0.5 });

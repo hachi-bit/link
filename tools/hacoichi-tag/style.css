@@ -90,6 +90,14 @@ h1 {
   border-radius: 6px;
   font-size: 0.95rem;
   text-align: center;
+  -moz-appearance: textfield;
+}
+/* hide the native spin buttons: they sit right at the input's edge, next
+   to our own +/- buttons and the "mm" label, and are an easy mis-tap */
+.options input[type="number"]::-webkit-outer-spin-button,
+.options input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .stepper {
@@ -111,6 +119,7 @@ h1 {
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
+  touch-action: manipulation;
 }
 .step-btn:hover { background: #f1efe8; }
 .step-btn:active { background: #e5e1d6; }
