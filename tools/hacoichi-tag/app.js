@@ -347,12 +347,19 @@ function detectCardBoxes(imgData, width, height) {
   const big = boxes.filter((b) => b.area > minArea);
   if (big.length === 0) return [];
 
-  // group by rounded height, prefer the group with the most members (repeating card size);
-  // break ties toward the larger box (the full card border, not inner content)
+  // Group by rounded WIDTH, not height: this format lays cards out in fixed-
+  // width columns, so a card's width stays the same across every row even
+  // when a row's height varies with content (a longer category line, an
+  // extra note, etc). Grouping by height would split rows with different
+  // content into separate groups, at risk of losing a row entirely - or, for
+  // a lone leftover card in a partial last row, losing just that one card -
+  // whenever the "most common group" heuristic below picks another row's
+  // height. Width doesn't have that problem, so a single group is normally
+  // enough to capture every real card regardless of row/column count.
   const buckets = {};
   for (const b of big) {
-    const h = b.maxY - b.minY;
-    const key = Math.round(h / 15) * 15;
+    const w = b.maxX - b.minX;
+    const key = Math.round(w / 15) * 15;
     (buckets[key] = buckets[key] || []).push(b);
   }
   let bestKey = null, bestCount = 0;
@@ -364,12 +371,9 @@ function detectCardBoxes(imgData, width, height) {
   }
   if (bestCount < 1) return [];
 
-  // A page can have multiple rows whose card height differs slightly by
-  // content length (e.g. a longer category line), landing them in a
-  // different bucket even though they're just as much "a row of cards" as
-  // the winning bucket. Keep every bucket that looks like a repeating group
-  // (2+ members), not just the single largest one, so other rows aren't
-  // silently dropped as noise.
+  // Still keep any other group with 2+ members as a safety net, in case
+  // width isn't perfectly uniform (rendering jitter, or a format where it
+  // legitimately varies) - same reasoning as above, just belt-and-braces.
   const candidates = [];
   for (const k in buckets) {
     if (buckets[k].length >= 2 || k === bestKey) candidates.push(...buckets[k]);
