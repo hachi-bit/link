@@ -20,8 +20,11 @@ const marginAboveInput = document.getElementById("marginAbove");
 const marginBelowInput = document.getElementById("marginBelow");
 const gapMmInput = document.getElementById("gapMm");
 const schematicPreview = document.getElementById("schematicPreview");
+const cardsSectionEl = document.getElementById("cardsSection");
+const cardsListEl = document.getElementById("cardsList");
 
 let currentFileBytes = null;
+let allCardsByPage = null; // detection result for the current file, cached so re-clicking "変換する" doesn't re-detect
 
 // parseFloat(...) || fallback would wrongly replace a legitimate 0 with the
 // fallback (0 is falsy), so check for a finite number instead.
@@ -72,29 +75,29 @@ function adjustValue(input, step) {
   input.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
-// tap = one step; press and hold = repeat, so reaching the far end of the
-// 2-35mm range doesn't take dozens of individual taps
-document.querySelectorAll(".step-btn").forEach((btn) => {
+// tap = one step; press and hold = repeat, so reaching the far end of a
+// range doesn't take dozens of individual taps. Delegated on `document`
+// (rather than attached per-button at load) so it also covers the
+// per-card count steppers, which don't exist yet until a PDF is detected.
+let repeatTimer = null;
+function stopRepeat() {
+  clearTimeout(repeatTimer);
+  window.removeEventListener("pointerup", stopRepeat);
+  window.removeEventListener("pointercancel", stopRepeat);
+}
+document.addEventListener("pointerdown", (e) => {
+  const btn = e.target.closest(".step-btn");
+  if (!btn) return;
   const input = document.getElementById(btn.dataset.target);
   const step = parseFloat(btn.dataset.step);
-  let repeatTimer = null;
-
-  function stopRepeat() {
-    clearTimeout(repeatTimer);
-    window.removeEventListener("pointerup", stopRepeat);
-    window.removeEventListener("pointercancel", stopRepeat);
-  }
-
-  btn.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  adjustValue(input, step);
+  window.addEventListener("pointerup", stopRepeat);
+  window.addEventListener("pointercancel", stopRepeat);
+  repeatTimer = setTimeout(function tick() {
     adjustValue(input, step);
-    window.addEventListener("pointerup", stopRepeat);
-    window.addEventListener("pointercancel", stopRepeat);
-    repeatTimer = setTimeout(function tick() {
-      adjustValue(input, step);
-      repeatTimer = setTimeout(tick, 90);
-    }, 450);
-  });
+    repeatTimer = setTimeout(tick, 90);
+  }, 450);
 });
 
 marginAboveInput.addEventListener("input", renderSchematic);
@@ -129,32 +132,32 @@ async function handleFile(file) {
     return;
   }
   currentFileBytes = new Uint8Array(await file.arrayBuffer());
-  optionsEl.hidden = false;
+  allCardsByPage = null;
+  cardsSectionEl.hidden = true;
+  optionsEl.hidden = true;
   previewArea.hidden = true;
-  setStatus(`「${file.name}」を読み込みました。設定を確認して「変換する」を押してください。`, "ok");
-}
+  setStatus(`「${file.name}」を読み込みました。カードを検出しています…`, null);
 
-processBtn.addEventListener("click", () => {
-  if (!currentFileBytes) return;
-  process().catch((err) => {
+  try {
+    allCardsByPage = await detectCards();
+    renderCardsList();
+    cardsSectionEl.hidden = false;
+    optionsEl.hidden = false;
+    const totalCards = allCardsByPage.reduce((s, p) => s + p.cards.length, 0);
+    setStatus(`${totalCards}件のタグを検出しました。枚数と設定を確認して「変換する」を押してください。`, "ok");
+  } catch (err) {
     console.error(err);
     setStatus("エラーが発生しました：" + err.message, "error");
-  });
-});
+  }
+}
 
-async function process() {
-  processBtn.disabled = true;
-  setStatus("PDFを解析しています…", null);
-
-  const marginAboveMm = numOr(marginAboveInput.value, 8);
-  const marginBelowMm = numOr(marginBelowInput.value, 7);
-  const gapMm = numOr(gapMmInput.value, 5);
-
-  // 1. render page(s) to canvas & detect card boxes
+// render each source page to a canvas, detect card boxes, and crop a
+// thumbnail per card so the "枚数" list can show what each one actually is
+async function detectCards() {
   const loadingTask = pdfjsLib.getDocument({ data: currentFileBytes.slice() });
   const doc = await loadingTask.promise;
 
-  const allCardsByPage = [];
+  const result = [];
   for (let pageNum = 1; pageNum <= doc.numPages; pageNum++) {
     const page = await doc.getPage(pageNum);
     const viewport = page.getViewport({ scale: RENDER_SCALE });
@@ -173,21 +176,77 @@ async function process() {
       );
     }
     const pageHeightPt = viewport.height / RENDER_SCALE;
+    const THUMB_W = 160;
     const cardsPt = boxesPx
       .sort((a, b) => a.minY - b.minY || a.minX - b.minX)
-      .map((b) => ({
-        x0: b.minX / RENDER_SCALE,
-        x1: b.maxX / RENDER_SCALE,
-        top: b.minY / RENDER_SCALE,
-        bottom: b.maxY / RENDER_SCALE,
-      }));
-    allCardsByPage.push({ pageIndex: pageNum - 1, pageHeightPt, cards: cardsPt });
+      .map((b) => {
+        const wPx = b.maxX - b.minX, hPx = b.maxY - b.minY;
+        const thumbCanvas = document.createElement("canvas");
+        thumbCanvas.width = THUMB_W;
+        thumbCanvas.height = Math.round((hPx / wPx) * THUMB_W);
+        thumbCanvas
+          .getContext("2d")
+          .drawImage(canvas, b.minX, b.minY, wPx, hPx, 0, 0, thumbCanvas.width, thumbCanvas.height);
+        return {
+          x0: b.minX / RENDER_SCALE,
+          x1: b.maxX / RENDER_SCALE,
+          top: b.minY / RENDER_SCALE,
+          bottom: b.maxY / RENDER_SCALE,
+          thumbUrl: thumbCanvas.toDataURL("image/png"),
+        };
+      });
+    result.push({ pageIndex: pageNum - 1, pageHeightPt, cards: cardsPt });
+  }
+  return result;
+}
+
+function renderCardsList() {
+  let idx = 0;
+  const items = [];
+  for (const page of allCardsByPage) {
+    for (const c of page.cards) {
+      c.countInputId = `cardCount${idx}`;
+      items.push(`
+        <div class="card-item">
+          <img class="card-thumb" src="${c.thumbUrl}" alt="検出したタグ ${idx + 1}">
+          <span class="stepper">
+            <button type="button" class="step-btn" data-target="${c.countInputId}" data-step="-1" aria-label="1枚減らす">－</button>
+            <input type="number" id="${c.countInputId}" value="1" min="0" max="50" step="1">
+            <button type="button" class="step-btn" data-target="${c.countInputId}" data-step="1" aria-label="1枚増やす">＋</button>
+            <span class="unit">枚</span>
+          </span>
+        </div>
+      `);
+      idx++;
+    }
+  }
+  cardsListEl.innerHTML = items.join("");
+}
+
+processBtn.addEventListener("click", () => {
+  if (!currentFileBytes || !allCardsByPage) return;
+  process().catch((err) => {
+    console.error(err);
+    setStatus("エラーが発生しました：" + err.message, "error");
+  });
+});
+
+async function process() {
+  processBtn.disabled = true;
+  setStatus("タグPDFを作成しています…", null);
+
+  const marginAboveMm = numOr(marginAboveInput.value, 8);
+  const marginBelowMm = numOr(marginBelowInput.value, 7);
+  const gapMm = numOr(gapMmInput.value, 5);
+
+  const totalCards = allCardsByPage.reduce(
+    (s, p) => s + p.cards.reduce((s2, c) => s2 + Math.max(0, Math.round(numOr(document.getElementById(c.countInputId).value, 1))), 0),
+    0
+  );
+  if (totalCards === 0) {
+    throw new Error("少なくとも1つのタグの枚数を1枚以上にしてください。");
   }
 
-  const totalCards = allCardsByPage.reduce((s, p) => s + p.cards.length, 0);
-  setStatus(`商品カードを${totalCards}件検出しました。タグPDFを作成しています…`, null);
-
-  // 2. build output PDF with pdf-lib
   const { PDFDocument, rgb } = window.PDFLib;
   const srcDoc = await PDFDocument.load(currentFileBytes);
   const srcPages = srcDoc.getPages();
@@ -226,48 +285,54 @@ async function process() {
     const srcPage = srcPages[pageInfo.pageIndex];
     const pageHeight = pageInfo.pageHeightPt;
     for (const c of pageInfo.cards) {
-      const pos = idx % perPage;
-      if (pos === 0) outPage = outDoc.addPage([page_w, page_h]);
-      const col = pos % cols;
-      const row = Math.floor(pos / cols);
-      const ox = page_margin + col * (tag_w + gap);
-      const oyTop = page_margin + row * (tag_h + gap);
-      const tagBottomY = page_h - (oyTop + tag_h);
-
-      outPage.drawRectangle({
-        x: ox, y: tagBottomY, width: tag_w, height: tag_h,
-        borderColor: rgb(0.55, 0.55, 0.55), borderWidth: 0.6,
-        borderDashArray: [2, 2],
-      });
-
-      const foldYFromTop = oyTop + staple_margin;
-      const foldYBottom = page_h - foldYFromTop;
-      outPage.drawLine({
-        start: { x: ox + 2, y: foldYBottom }, end: { x: ox + tag_w - 2, y: foldYBottom },
-        color: rgb(0.7, 0.7, 0.7), thickness: 0.5, dashArray: [1, 2],
-      });
-
-      const cx = ox + tag_w / 2;
-      const cyFromTop = oyTop + staple_margin_above;
-      const cyBottom = page_h - cyFromTop;
-      const r = 4.5;
-      outPage.drawEllipse({ x: cx, y: cyBottom, xScale: r, yScale: r, borderColor: rgb(0.65, 0.65, 0.65), borderWidth: 0.5 });
-      outPage.drawLine({ start: { x: cx - r - 2, y: cyBottom }, end: { x: cx + r + 2, y: cyBottom }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
-      outPage.drawLine({ start: { x: cx, y: cyBottom - r - 2 }, end: { x: cx, y: cyBottom + r + 2 }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
+      const count = Math.max(0, Math.round(numOr(document.getElementById(c.countInputId).value, 1)));
+      if (count === 0) continue;
 
       const card_w = c.x1 - c.x0;
       const card_h = c.bottom - c.top;
-      const destX = ox + side_margin;
-      const destYTopOffset = oyTop + staple_margin;
-      const destYBottom = page_h - (destYTopOffset + card_h);
-
+      // embedding is the same regardless of how many times this card repeats
       const embedded = await outDoc.embedPage(srcPage, {
         left: c.x0, right: c.x1,
         top: pageHeight - c.top, bottom: pageHeight - c.bottom,
       });
-      outPage.drawPage(embedded, { x: destX, y: destYBottom, width: card_w, height: card_h });
 
-      idx++;
+      for (let n = 0; n < count; n++) {
+        const pos = idx % perPage;
+        if (pos === 0) outPage = outDoc.addPage([page_w, page_h]);
+        const col = pos % cols;
+        const row = Math.floor(pos / cols);
+        const ox = page_margin + col * (tag_w + gap);
+        const oyTop = page_margin + row * (tag_h + gap);
+        const tagBottomY = page_h - (oyTop + tag_h);
+
+        outPage.drawRectangle({
+          x: ox, y: tagBottomY, width: tag_w, height: tag_h,
+          borderColor: rgb(0.55, 0.55, 0.55), borderWidth: 0.6,
+          borderDashArray: [2, 2],
+        });
+
+        const foldYFromTop = oyTop + staple_margin;
+        const foldYBottom = page_h - foldYFromTop;
+        outPage.drawLine({
+          start: { x: ox + 2, y: foldYBottom }, end: { x: ox + tag_w - 2, y: foldYBottom },
+          color: rgb(0.7, 0.7, 0.7), thickness: 0.5, dashArray: [1, 2],
+        });
+
+        const cx = ox + tag_w / 2;
+        const cyFromTop = oyTop + staple_margin_above;
+        const cyBottom = page_h - cyFromTop;
+        const r = 4.5;
+        outPage.drawEllipse({ x: cx, y: cyBottom, xScale: r, yScale: r, borderColor: rgb(0.65, 0.65, 0.65), borderWidth: 0.5 });
+        outPage.drawLine({ start: { x: cx - r - 2, y: cyBottom }, end: { x: cx + r + 2, y: cyBottom }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
+        outPage.drawLine({ start: { x: cx, y: cyBottom - r - 2 }, end: { x: cx, y: cyBottom + r + 2 }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
+
+        const destX = ox + side_margin;
+        const destYTopOffset = oyTop + staple_margin;
+        const destYBottom = page_h - (destYTopOffset + card_h);
+        outPage.drawPage(embedded, { x: destX, y: destYBottom, width: card_w, height: card_h });
+
+        idx++;
+      }
     }
   }
 
