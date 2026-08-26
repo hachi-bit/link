@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ハコイチ値札加工ツール | 鉢-bit</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>🐝 ハコイチ値札加工ツール</h1>
+    <p class="lead">ハコイチ管理システムから出力したバーコードPDFを、<br>ホチキス留めしやすい余白付きの値札PDFに変換します。</p>
+
+    <div id="dropzone" class="dropzone">
+      <p>ここにPDFをドラッグ＆ドロップ<br>またはタップして選択</p>
+      <input type="file" id="fileInput" accept="application/pdf" hidden>
+    </div>
+
+    <div id="status" class="status" hidden></div>
+
+    <section id="options" class="options" hidden>
+      <h2>レイアウト設定</h2>
+      <label>ホチキス用の余白（上部）
+        <input type="number" id="stapleMargin" value="15" min="5" max="40" step="1"> mm
+      </label>
+      <label>タグ間のすき間
+        <input type="number" id="gapMm" value="5" min="0" max="20" step="1"> mm
+      </label>
+      <button id="processBtn">この設定で変換する</button>
+    </section>
+
+    <div id="previewArea" class="preview" hidden>
+      <h2>プレビュー</h2>
+      <canvas id="previewCanvas"></canvas>
+      <a id="downloadLink" class="download-btn" hidden download="値札_ホチキス加工版.pdf">📄 加工済みPDFをダウンロード</a>
+    </div>
+
+    <footer>
+      <p>鉢-bit（はちびっと） / 処理はすべてこのブラウザ内で行われます。PDFは外部に送信されません。</p>
+    </footer>
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

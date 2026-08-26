@@ -1,0 +1,129 @@
+:root {
+  --bee-black: #2b2620;
+  --bee-yellow: #f4c430;
+  --bee-yellow-dark: #d9a915;
+  --paper: #fdfbf6;
+  --gray-line: #cfc9bd;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+  background: var(--paper);
+  color: var(--bee-black);
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lead {
+  color: #5a5347;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}
+
+.dropzone {
+  border: 2px dashed var(--bee-yellow-dark);
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #fffdf5;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.dropzone.drag-over {
+  background: #fff6db;
+  border-color: var(--bee-black);
+}
+.dropzone p {
+  margin: 0;
+  color: #6b6152;
+  line-height: 1.8;
+}
+
+.status {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f1efe8;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+.status.error { background: #fbe3e0; color: #9c3b2e; }
+.status.ok { background: #eaf5e6; color: #34612a; }
+
+.options {
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid var(--gray-line);
+  border-radius: 10px;
+  background: #fff;
+}
+.options h2 { font-size: 1rem; margin: 0 0 12px; }
+.options label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.92rem;
+}
+.options input[type="number"] {
+  width: 80px;
+  padding: 6px 8px;
+  border: 1px solid var(--gray-line);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+button, .download-btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--bee-black);
+  color: var(--bee-yellow);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 6px;
+}
+button:hover, .download-btn:hover { background: #45392a; }
+button:disabled { background: #ccc; cursor: not-allowed; }
+
+.preview {
+  margin-top: 28px;
+}
+.preview h2 { font-size: 1rem; margin-bottom: 10px; }
+#previewCanvas {
+  width: 100%;
+  border: 1px solid var(--gray-line);
+  border-radius: 8px;
+  background: white;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 0.78rem;
+  color: #9a9284;
+  text-align: center;
+  line-height: 1.6;
+}
