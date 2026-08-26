@@ -5,9 +5,6 @@ import * as pdfjsLib from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/legac
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/legacy/build/pdf.worker.min.mjs";
 
-const JP_FONT_URL =
-  "https://cdn.jsdelivr.net/npm/@expo-google-fonts/noto-sans-jp@0.4.3/400Regular/NotoSansJP_400Regular.ttf";
-
 const MM = 2.83465; // pt per mm
 const RENDER_SCALE = 4; // render resolution multiplier for card detection
 
@@ -23,7 +20,6 @@ const stapleMarginInput = document.getElementById("stapleMargin");
 const gapMmInput = document.getElementById("gapMm");
 
 let currentFileBytes = null;
-let jpFontBytesCache = null;
 
 function setStatus(msg, kind) {
   statusEl.hidden = false;
@@ -115,14 +111,6 @@ async function process() {
   const srcPages = srcDoc.getPages();
 
   const outDoc = await PDFDocument.create();
-  outDoc.registerFontkit(window.fontkit);
-
-  if (!jpFontBytesCache) {
-    const resp = await fetch(JP_FONT_URL);
-    if (!resp.ok) throw new Error("日本語フォントの読み込みに失敗しました。");
-    jpFontBytesCache = await resp.arrayBuffer();
-  }
-  const jpFont = await outDoc.embedFont(jpFontBytesCache, { subset: true });
 
   const staple_margin = stapleMarginMm * MM;
   const bottom_margin = 3 * MM;
@@ -178,7 +166,6 @@ async function process() {
       outPage.drawEllipse({ x: cx, y: cyBottom, xScale: r, yScale: r, borderColor: rgb(0.65, 0.65, 0.65), borderWidth: 0.5 });
       outPage.drawLine({ start: { x: cx - r - 2, y: cyBottom }, end: { x: cx + r + 2, y: cyBottom }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
       outPage.drawLine({ start: { x: cx, y: cyBottom - r - 2 }, end: { x: cx, y: cyBottom + r + 2 }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
-      outPage.drawText("ホチキス", { x: cx - 14, y: cyBottom - r - 9, size: 5.5, font: jpFont, color: rgb(0.6, 0.6, 0.6) });
 
       const destX = ox + side_margin;
       const destYTopOffset = oyTop + staple_margin;
