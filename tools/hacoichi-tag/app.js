@@ -203,12 +203,16 @@ async function process() {
   const page_margin = 10 * MM;
   const page_w = 595.0, page_h = 842.0; // A4
 
-  // assume all cards share (roughly) the same size; use the first card as reference
-  const refCard = allCardsByPage[0].cards[0];
-  const card_w = refCard.x1 - refCard.x0;
-  const card_h = refCard.bottom - refCard.top;
-  const tag_w = side_margin * 2 + card_w;
-  const tag_h = staple_margin + card_h + bottom_margin;
+  // cards are usually a consistent size, but height can vary slightly row
+  // to row depending on content (e.g. a longer category line), so size the
+  // tag grid from the largest card rather than assuming uniform size; each
+  // card is still drawn at its own true size below, so nothing gets
+  // stretched or squished to fit
+  const allCards = allCardsByPage.flatMap((p) => p.cards);
+  const maxCardW = Math.max(...allCards.map((c) => c.x1 - c.x0));
+  const maxCardH = Math.max(...allCards.map((c) => c.bottom - c.top));
+  const tag_w = side_margin * 2 + maxCardW;
+  const tag_h = staple_margin + maxCardH + bottom_margin;
 
   const usable_w = page_w - 2 * page_margin;
   const usable_h = page_h - 2 * page_margin;
@@ -251,6 +255,8 @@ async function process() {
       outPage.drawLine({ start: { x: cx - r - 2, y: cyBottom }, end: { x: cx + r + 2, y: cyBottom }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
       outPage.drawLine({ start: { x: cx, y: cyBottom - r - 2 }, end: { x: cx, y: cyBottom + r + 2 }, color: rgb(0.65, 0.65, 0.65), thickness: 0.5 });
 
+      const card_w = c.x1 - c.x0;
+      const card_h = c.bottom - c.top;
       const destX = ox + side_margin;
       const destYTopOffset = oyTop + staple_margin;
       const destYBottom = page_h - (destYTopOffset + card_h);
@@ -357,7 +363,37 @@ function detectCardBoxes(imgData, width, height) {
     }
   }
   if (bestCount < 1) return [];
-  return buckets[bestKey];
+
+  // A page can have multiple rows whose card height differs slightly by
+  // content length (e.g. a longer category line), landing them in a
+  // different bucket even though they're just as much "a row of cards" as
+  // the winning bucket. Keep every bucket that looks like a repeating group
+  // (2+ members), not just the single largest one, so other rows aren't
+  // silently dropped as noise.
+  const candidates = [];
+  for (const k in buckets) {
+    if (buckets[k].length >= 2 || k === bestKey) candidates.push(...buckets[k]);
+  }
+
+  // Each card's outer border and its denser inner content (barcode + text)
+  // can end up as two separate connected components landing in two
+  // different (both legitimately repeating) buckets, double-counting the
+  // same physical card. Keep only the outermost box of any such overlap.
+  const boxArea = (b) => (b.maxX - b.minX) * (b.maxY - b.minY);
+  const containedFraction = (inner, outer) => {
+    const ix0 = Math.max(inner.minX, outer.minX);
+    const iy0 = Math.max(inner.minY, outer.minY);
+    const ix1 = Math.min(inner.maxX, outer.maxX);
+    const iy1 = Math.min(inner.maxY, outer.maxY);
+    if (ix1 <= ix0 || iy1 <= iy0) return 0;
+    return ((ix1 - ix0) * (iy1 - iy0)) / boxArea(inner);
+  };
+  const byAreaDesc = candidates.slice().sort((a, b) => boxArea(b) - boxArea(a));
+  const kept = [];
+  for (const b of byAreaDesc) {
+    if (!kept.some((k) => containedFraction(b, k) > 0.8)) kept.push(b);
+  }
+  return kept;
 }
 
 function dilateHoriz(src, w, h, r) {
