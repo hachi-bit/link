@@ -6,7 +6,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/legacy/build/pdf.worker.min.mjs";
 
 const JP_FONT_URL =
-  "https://cdn.jsdelivr.net/npm/@embedpdf/fonts-jp@1.0.0/fonts/NotoSansJP-Regular.otf";
+  "https://cdn.jsdelivr.net/npm/@expo-google-fonts/noto-sans-jp@0.4.3/400Regular/NotoSansJP_400Regular.ttf";
 
 const MM = 2.83465; // pt per mm
 const RENDER_SCALE = 4; // render resolution multiplier for card detection
@@ -122,7 +122,7 @@ async function process() {
     if (!resp.ok) throw new Error("日本語フォントの読み込みに失敗しました。");
     jpFontBytesCache = await resp.arrayBuffer();
   }
-  const jpFont = await outDoc.embedFont(jpFontBytesCache, { subset: false });
+  const jpFont = await outDoc.embedFont(jpFontBytesCache, { subset: true });
 
   const staple_margin = stapleMarginMm * MM;
   const bottom_margin = 3 * MM;
