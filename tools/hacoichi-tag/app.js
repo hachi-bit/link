@@ -18,8 +18,60 @@ const previewCanvas = document.getElementById("previewCanvas");
 const downloadLink = document.getElementById("downloadLink");
 const stapleMarginInput = document.getElementById("stapleMargin");
 const gapMmInput = document.getElementById("gapMm");
+const schematicPreview = document.getElementById("schematicPreview");
 
 let currentFileBytes = null;
+
+// ---- live schematic preview (illustrative sizing, not the loaded PDF's actual card size) ----
+const SCHEM_PX_PER_MM = 3.6;
+const SCHEM_CARD_W_MM = 42;
+const SCHEM_CARD_H_MM = 25;
+const SCHEM_SIDE_MARGIN_MM = 3;
+const SCHEM_BOTTOM_MARGIN_MM = 3;
+
+function schemPx(mm) {
+  return mm * SCHEM_PX_PER_MM;
+}
+
+function schemTagHtml(tagWmm, tagHmm, stapleMarginMm) {
+  return `
+    <div class="schem-tag" style="width:${schemPx(tagWmm)}px;height:${schemPx(tagHmm)}px;">
+      <div class="schem-fold" style="top:${schemPx(stapleMarginMm)}px;"></div>
+      <div class="schem-cross" style="top:${schemPx(stapleMarginMm / 2)}px;">⊕</div>
+      <div class="schem-card" style="left:${schemPx(SCHEM_SIDE_MARGIN_MM)}px; top:${schemPx(stapleMarginMm)}px; width:${schemPx(SCHEM_CARD_W_MM)}px; height:${schemPx(SCHEM_CARD_H_MM)}px;"></div>
+    </div>
+  `;
+}
+
+function renderSchematic() {
+  const stapleMarginMm = parseFloat(stapleMarginInput.value) || 0;
+  const gapMm = Math.max(0, parseFloat(gapMmInput.value) || 0);
+  const tagWmm = SCHEM_SIDE_MARGIN_MM * 2 + SCHEM_CARD_W_MM;
+  const tagHmm = stapleMarginMm + SCHEM_CARD_H_MM + SCHEM_BOTTOM_MARGIN_MM;
+  const tag = schemTagHtml(tagWmm, tagHmm, stapleMarginMm);
+  schematicPreview.innerHTML = `${tag}<div class="schem-gap" style="width:${schemPx(gapMm)}px;"></div>${tag}`;
+}
+
+function adjustValue(input, step) {
+  const min = parseFloat(input.min);
+  const max = parseFloat(input.max);
+  let next = (parseFloat(input.value) || 0) + step;
+  if (!Number.isNaN(min)) next = Math.max(min, next);
+  if (!Number.isNaN(max)) next = Math.min(max, next);
+  input.value = next;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+document.querySelectorAll(".step-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const input = document.getElementById(btn.dataset.target);
+    adjustValue(input, parseFloat(btn.dataset.step));
+  });
+});
+
+stapleMarginInput.addEventListener("input", renderSchematic);
+gapMmInput.addEventListener("input", renderSchematic);
+renderSchematic();
 
 function setStatus(msg, kind) {
   statusEl.hidden = false;

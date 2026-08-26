@@ -20,12 +20,30 @@
 
     <section id="options" class="options" hidden>
       <h2>レイアウト設定</h2>
-      <label>ホチキス用の余白（上部）
-        <input type="number" id="stapleMargin" value="15" min="5" max="40" step="1"> mm
+      <label>
+        <span>ホチキス用の余白（上部）</span>
+        <span class="stepper">
+          <button type="button" class="step-btn" data-target="stapleMargin" data-step="-1" aria-label="1mm減らす">－</button>
+          <input type="number" id="stapleMargin" value="15" min="5" max="40" step="1">
+          <span class="unit">mm</span>
+          <button type="button" class="step-btn" data-target="stapleMargin" data-step="1" aria-label="1mm増やす">＋</button>
+        </span>
       </label>
-      <label>タグ間のすき間
-        <input type="number" id="gapMm" value="5" min="0" max="20" step="1"> mm
+      <label>
+        <span>タグ間のすき間</span>
+        <span class="stepper">
+          <button type="button" class="step-btn" data-target="gapMm" data-step="-1" aria-label="1mm減らす">－</button>
+          <input type="number" id="gapMm" value="5" min="0" max="20" step="1">
+          <span class="unit">mm</span>
+          <button type="button" class="step-btn" data-target="gapMm" data-step="1" aria-label="1mm増やす">＋</button>
+        </span>
       </label>
+
+      <div class="schematic">
+        <p class="schematic-label">配置イメージ（実際の値札の内容は変換後にプレビューできます）</p>
+        <div id="schematicPreview" class="schematic-preview"></div>
+      </div>
+
       <button id="processBtn">この設定で変換する</button>
     </section>
 

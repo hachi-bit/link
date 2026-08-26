@@ -84,11 +84,88 @@ h1 {
   font-size: 0.92rem;
 }
 .options input[type="number"] {
-  width: 80px;
-  padding: 6px 8px;
+  width: 52px;
+  padding: 6px 4px;
   border: 1px solid var(--gray-line);
   border-radius: 6px;
   font-size: 0.95rem;
+  text-align: center;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.step-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--gray-line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--bee-black);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.step-btn:hover { background: #f1efe8; }
+.step-btn:active { background: #e5e1d6; }
+.unit { color: #6b6152; font-size: 0.85rem; }
+
+.schematic { margin: 4px 0 16px; }
+.schematic-label {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  color: #9a9284;
+}
+.schematic-preview {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  overflow-x: auto;
+  padding: 14px;
+  background: #f6f4ee;
+  border: 1px solid var(--gray-line);
+  border-radius: 8px;
+}
+.schem-tag {
+  position: relative;
+  flex-shrink: 0;
+  border: 1px dashed #b9b2a3;
+  border-radius: 2px;
+  background: #fff;
+  transition: width 0.12s ease, height 0.12s ease;
+}
+.schem-fold {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  border-top: 1px dashed #b9b2a3;
+  transition: top 0.12s ease;
+}
+.schem-cross {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #9a9284;
+  font-size: 15px;
+  line-height: 1;
+  transition: top 0.12s ease;
+}
+.schem-card {
+  position: absolute;
+  background: repeating-linear-gradient(45deg, #ece8dd, #ece8dd 4px, #f7f5ef 4px, #f7f5ef 8px);
+  border: 1px solid var(--gray-line);
+  border-radius: 2px;
+  transition: top 0.12s ease;
+}
+.schem-gap {
+  flex-shrink: 0;
+  transition: width 0.12s ease;
 }
 
 button, .download-btn {
