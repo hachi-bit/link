@@ -107,19 +107,21 @@ h1 {
   flex-shrink: 0;
 }
 .step-btn {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   margin: 0;
   border: 1px solid var(--gray-line);
   border-radius: 6px;
   background: #fff;
   color: var(--bee-black);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
   touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .step-btn:hover { background: #f1efe8; }
 .step-btn:active { background: #e5e1d6; }
@@ -129,7 +131,7 @@ h1 {
 .schematic-label {
   margin: 0 0 8px;
   font-size: 0.78rem;
-  color: #9a9284;
+  color: #6b6152;
 }
 .schematic-preview {
   display: flex;

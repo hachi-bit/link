@@ -72,10 +72,28 @@ function adjustValue(input, step) {
   input.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
+// tap = one step; press and hold = repeat, so reaching the far end of the
+// 2-35mm range doesn't take dozens of individual taps
 document.querySelectorAll(".step-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const input = document.getElementById(btn.dataset.target);
-    adjustValue(input, parseFloat(btn.dataset.step));
+  const input = document.getElementById(btn.dataset.target);
+  const step = parseFloat(btn.dataset.step);
+  let repeatTimer = null;
+
+  function stopRepeat() {
+    clearTimeout(repeatTimer);
+    window.removeEventListener("pointerup", stopRepeat);
+    window.removeEventListener("pointercancel", stopRepeat);
+  }
+
+  btn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    adjustValue(input, step);
+    window.addEventListener("pointerup", stopRepeat);
+    window.addEventListener("pointercancel", stopRepeat);
+    repeatTimer = setTimeout(function tick() {
+      adjustValue(input, step);
+      repeatTimer = setTimeout(tick, 90);
+    }, 450);
   });
 });
 

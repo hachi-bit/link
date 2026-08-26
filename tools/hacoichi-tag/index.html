@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ハコイチ値札加工ツール | 鉢-bit</title>
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <main class="wrap">
@@ -25,8 +25,8 @@
         <span class="stepper">
           <button type="button" class="step-btn" data-target="marginAbove" data-step="-1" aria-label="1mm減らす">－</button>
           <input type="number" id="marginAbove" value="8" min="2" max="35" step="1">
-          <span class="unit">mm</span>
           <button type="button" class="step-btn" data-target="marginAbove" data-step="1" aria-label="1mm増やす">＋</button>
+          <span class="unit">mm</span>
         </span>
       </label>
       <label>
@@ -34,8 +34,8 @@
         <span class="stepper">
           <button type="button" class="step-btn" data-target="marginBelow" data-step="-1" aria-label="1mm減らす">－</button>
           <input type="number" id="marginBelow" value="7" min="2" max="35" step="1">
-          <span class="unit">mm</span>
           <button type="button" class="step-btn" data-target="marginBelow" data-step="1" aria-label="1mm増やす">＋</button>
+          <span class="unit">mm</span>
         </span>
       </label>
       <label>
@@ -43,8 +43,8 @@
         <span class="stepper">
           <button type="button" class="step-btn" data-target="gapMm" data-step="-1" aria-label="1mm減らす">－</button>
           <input type="number" id="gapMm" value="5" min="0" max="20" step="1">
-          <span class="unit">mm</span>
           <button type="button" class="step-btn" data-target="gapMm" data-step="1" aria-label="1mm増やす">＋</button>
+          <span class="unit">mm</span>
         </span>
       </label>
 
@@ -68,6 +68,6 @@
   </main>
 
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script type="module" src="app.js?v=3"></script>
+<script type="module" src="app.js?v=4"></script>
 </body>
 </html>
